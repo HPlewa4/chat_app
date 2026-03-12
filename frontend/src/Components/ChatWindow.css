@@ -1,0 +1,8 @@
+.chat-window {
+  background-color: hsl(175, 95%, 22%);
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center;
+   height: 100vh;
+   width: 70%;
+}
