@@ -6,11 +6,19 @@ import API from '../api'
 
 type MessageType = {
   id?: string
-  user: 'user' | 'other'
+  user: string
   text: string
 }
+interface User {
+  username: string;
+  email: string;
+}
 
-const ChatWindow: React.FC = () => {
+interface ChatWindowProps {
+  currentUser: User | null;
+}
+
+const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser }) => {
   const [messages, setMessages] = useState<MessageType[]>([])
 
   useEffect(() => {
@@ -26,8 +34,8 @@ const ChatWindow: React.FC = () => {
   }, [])
 
   const addMessage = async (text: string) => {
-    const newMsg: MessageType = { user: 'user', text }
-    setMessages(prev => [...prev, newMsg]) // optimistic UI
+    const newMsg: MessageType = { user: currentUser?.username || 'Unknown User', text }
+    setMessages(prev => [...prev, newMsg])
 
     try {
       const res = await API.post<{ id: string }>('/chat/message', newMsg)
@@ -45,7 +53,11 @@ const ChatWindow: React.FC = () => {
     <div className="chat-window">
       <div className="messages">
         {messages.map((m, i) => (
-          <Message key={m.id || i} user={m.user} text={m.text} />
+          <Message 
+              key={m.id || i} 
+              user={m.user} 
+              text={m.text} 
+              currentUser={currentUser?.username || ''}/>
         ))}
       </div>
 
