@@ -15,7 +15,7 @@ interface User {
   username: string | undefined;
   email: string | undefined;
 }
-export default function AuthPage({ setCurrentUser }: LoginProps): JSX.Element {
+export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
   const [isRegistering, setIsRegistering] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
@@ -75,6 +75,7 @@ export default function AuthPage({ setCurrentUser }: LoginProps): JSX.Element {
           <input
             placeholder="Username"
             value={username}
+            style={{ padding: "10px 0" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
           />
         )}
@@ -84,6 +85,7 @@ export default function AuthPage({ setCurrentUser }: LoginProps): JSX.Element {
           placeholder="Email"
           value={email}
           autoComplete="email"
+          style={{ padding: "10px 0" }}
           onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
         />
 
@@ -91,6 +93,7 @@ export default function AuthPage({ setCurrentUser }: LoginProps): JSX.Element {
           type="password"
           placeholder="Password"
           value={password}
+          style={{ padding: "10px 0" }}
           onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
         />
 
@@ -99,6 +102,7 @@ export default function AuthPage({ setCurrentUser }: LoginProps): JSX.Element {
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
+            style={{ padding: "10px 0" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
           />
         )}

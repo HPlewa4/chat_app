@@ -1,15 +1,25 @@
 .chat-window {
-  background-color:green;
+  background-color: var(--chat-bg);
   height: 100vh;
   display: flex;
   flex-direction: column;
   width: 100%;
+  flex: 1;
 }
 
 .messages {
   flex: 1;
   overflow-y: auto;
-  padding: 10px;
-  flex-direction: column;
+  padding: 24px;
   display: flex;
+  flex-direction: column;
+  gap: 6px; 
+}
+
+.messages::-webkit-scrollbar {
+  width: 6px;
+}
+.messages::-webkit-scrollbar-thumb {
+  background-color: #3d71aa;
+  border-radius: 10px;
 }
