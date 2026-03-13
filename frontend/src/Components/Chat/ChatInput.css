@@ -1,0 +1,20 @@
+.chat-input {
+  display: flex;
+  height: 40px;
+  align-items: stretch;
+  position: sticky;
+  bottom:0;
+  margin:5px;
+}
+
+.text-input {
+  flex: 1;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+.send {
+  width: 60px;
+  box-sizing: border-box;
+  margin: 0;
+}
