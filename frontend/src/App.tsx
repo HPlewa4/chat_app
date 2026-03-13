@@ -31,7 +31,7 @@ function App() {
             path="/" 
             element={
               <div style={{ display: 'flex' }} className="App">
-                <AllChats currentUser={currentUser} />
+                <AllChats currentUser={currentUser} setCurrentUser={setCurrentUser} />
                 <ChatWindow currentUser={currentUser} />
               </div>
             } 

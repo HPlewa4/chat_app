@@ -1,6 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
 import './AllChats.css';
+import UserBar from './Sessions/UserBar';
 
 interface User {
   username: string;
@@ -9,15 +10,13 @@ interface User {
 
 interface AllChatsProps {
   currentUser: User | null;
+  setCurrentUser: (user: any) => void;
 }
 
-const AllChats: React.FC<AllChatsProps> = ({ currentUser }) => {
+const AllChats: React.FC<AllChatsProps> = ({ currentUser,setCurrentUser }) => {
   return (
     <div className="all-chats">
-      <div>currentUser: {currentUser ? currentUser.username : "No user logged in"}</div>
-      <Link to="/login">
-        <button className="login-btn">Go to Login</button>
-      </Link>
+      <UserBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
     </div>
   )
 }
