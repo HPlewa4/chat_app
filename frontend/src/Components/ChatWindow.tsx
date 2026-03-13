@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import './ChatWindow.css'
 import Message from './Chat/Message'
 import ChatInput from './Chat/ChatInput'
@@ -20,6 +20,16 @@ interface ChatWindowProps {
 
 const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser }) => {
   const [messages, setMessages] = useState<MessageType[]>([])
+  
+  const messagesEndRef = useRef<HTMLDivElement | null>(null)
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
+  }
+
+  useEffect(() => {
+    scrollToBottom()
+  }, [messages])
 
   useEffect(() => {
     const fetchMessages = async () => {
@@ -59,6 +69,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser }) => {
               text={m.text} 
               currentUser={currentUser?.username || ''}/>
         ))}
+        <div ref={messagesEndRef} />
       </div>
 
       <ChatInput onSend={addMessage} />
