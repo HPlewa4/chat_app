@@ -107,7 +107,7 @@ const AllChats: React.FC<AllChatsProps> = ({
   return (
     <div className="all-chats">
       <Search onSearch={searchUsers} />
-      <div>
+      <div className="scrollable-element search-results-list">
         {users.map((user) => (
           <User key={`search-${user}`} 
                 name={user} 
@@ -115,17 +115,19 @@ const AllChats: React.FC<AllChatsProps> = ({
                 onClick={() => handleSelectUser(user)} />
         ))}
       </div>
-      <div className="active-chats-list">
+      <div className={`active-chats-list ${users.length > 0 ? 'has-search-results' : ''}`}>
         <h3>Recent Chats</h3>
-        {activeSessions.map((session) => (
-          <User 
-            key={`session-${session.id}`}
-            name={session.username} 
-            last_message={session.last_message}
-            searching={false}
-            onClick={() => setActiveSessionId(session.id)}
-          />
-        ))}
+        <div className="scrollable-element active-sessions">
+          {activeSessions.map((session) => (
+            <User 
+              key={`session-${session.id}`}
+              name={session.username} 
+              last_message={session.last_message}
+              searching={false}
+              onClick={() => setActiveSessionId(session.id)}
+            />
+          ))}
+        </div>  
       </div>
       <UserBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
     </div>

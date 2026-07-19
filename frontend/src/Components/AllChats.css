@@ -4,7 +4,53 @@
   max-width: 320px;
   display: flex;
   flex-direction: column;
+  height: 100vh;
   border-right: 1px solid var(--border-color);
   box-shadow: 2px 0 5px rgba(0,0,0,0.05);
   z-index: 10;
+}
+
+.scrollable-element {
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 4px;
+  -webkit-overflow-scrolling: touch; 
+}
+
+.search-results-list {
+  flex-shrink: 0;
+  max-height: 250px; 
+}
+
+.active-chats-list {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1; 
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.active-sessions {
+  flex-grow: 1;
+}
+.active-chats-list.has-search-results {
+  flex-grow: 0; 
+}
+
+.active-chats-list.has-search-results .active-sessions {
+  max-height: 200px;
+}
+
+.scrollable-element::-webkit-scrollbar {
+  width: 6px;
+}
+.scrollable-element::-webkit-scrollbar-track {
+  background: transparent;
+}
+.scrollable-element::-webkit-scrollbar-thumb {
+  background-color: rgba(155, 155, 155, 0.5);
+  border-radius: 20px;
+}
+.scrollable-element::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(100, 100, 100, 0.7);
 }
