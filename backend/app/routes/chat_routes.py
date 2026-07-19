@@ -1,7 +1,8 @@
-from fastapi import APIRouter
-from app.database import chats_collection
-from app.models.chat_models import MsgCreate, MsgOut
-from typing import List
+from datetime import datetime
+from fastapi import APIRouter, Query
+from app.database import messages_collection, sessions_collection
+from app.models.chat_models import MsgCreate, MsgOut, SessionCreate, SessionOut
+
 
 router = APIRouter()
 
@@ -12,25 +13,87 @@ async def create_msg(message: MsgCreate):
 
     new_msg = {
         "user": message.user,
-        "text": message.text
+        "text": message.text,
+        "session_id": message.session_id,
+        "timestamp": datetime.utcnow()
     }
 
-    result = await chats_collection.insert_one(new_msg)
+    result = await messages_collection.insert_one(new_msg)
 
     return {
-        "id": str(result.inserted_id)
+        "id": str(result.inserted_id),
+        "user": new_msg["user"],
+        "text": new_msg["text"],
+        "session_id": new_msg["session_id"]
     }
 
-@router.get("/messages", response_model=List[MsgOut])
-async def get_messages():
-    messages_cursor = chats_collection.find({})
-    messages = await messages_cursor.to_list(length=100)
+@router.get("/messages", response_model=list[MsgOut])
+async def get_messages(session_id: str = Query(...)):
+    messages_cursor = messages_collection.find({"session_id": session_id})
+    
+    messages = await messages_cursor.sort("timestamp", 1).to_list(length=100)
 
     return [
         {
             "id": str(msg["_id"]),
             "user": msg["user"],
-            "text": msg["text"]
+            "text": msg["text"],
+            "session_id": msg["session_id"]
         }
         for msg in messages
     ]
+
+
+@router.post("/session", response_model=SessionOut)
+async def get_or_create_session(payload: SessionCreate):
+    existing_session = await sessions_collection.find_one({
+        "participants": {"$all": [payload.current_user, payload.target_user]}
+    })
+
+    if existing_session:
+        last_msg_doc = await messages_collection.find_one(
+            {"session_id": str(existing_session["_id"])},
+            sort=[("timestamp", -1)]
+        )
+        last_msg = last_msg_doc["text"] if last_msg_doc else "No messages yet"
+
+        return {
+            "id": str(existing_session["_id"]),
+            "participants": existing_session["participants"],
+            "last_message": last_msg
+        }
+
+    new_session = {
+        "participants": [payload.current_user, payload.target_user]
+    }
+    result = await sessions_collection.insert_one(new_session)
+
+    return {
+        "id": str(result.inserted_id),
+        "participants": new_session["participants"],
+        "last_message": "No messages yet"
+    }
+
+
+@router.get("/sessions", response_model=list[SessionOut])
+async def get_user_sessions(username: str = Query(...)):
+    cursor = sessions_collection.find({"participants": username})
+    sessions = await cursor.to_list(length=50)
+
+    session_list = []
+    for s in sessions:
+        session_id_str = str(s["_id"])
+        
+        last_msg_doc = await messages_collection.find_one(
+            {"session_id": session_id_str},
+            sort=[("timestamp", -1)]
+        )
+        last_msg = last_msg_doc["text"] if last_msg_doc else "No messages yet"
+
+        session_list.append({
+            "id": session_id_str,
+            "participants": s["participants"],
+            "last_message": last_msg[:25]
+        })
+
+    return session_list
