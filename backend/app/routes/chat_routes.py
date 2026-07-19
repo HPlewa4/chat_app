@@ -7,7 +7,7 @@ router = APIRouter()
 
 
 @router.post("/message")
-async def create_user(message: MsgCreate):
+async def create_msg(message: MsgCreate):
 
 
     new_msg = {
