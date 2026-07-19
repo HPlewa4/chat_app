@@ -6,7 +6,6 @@ import Search from './Sessions/Search';
 import API from "../api";
 import User from './Sessions/User';
 
-
 interface UserInterface {
   username: string;
   email: string;
@@ -16,6 +15,7 @@ interface ChatSession {
   id: string;
   username: string;
   last_message: string;
+  updated_at: string;
 }
 
 interface AllChatsProps {
@@ -50,8 +50,13 @@ const AllChats: React.FC<AllChatsProps> = ({
           return {
             id: session.id,
             username: otherUser || "Unknown User",
-            last_message: session.last_message
+            last_message: session.last_message,
+            updated_at: session.updated_at || new Date(0).toISOString() 
           };
+        });
+
+        formattedSessions.sort((a, b) => {
+          return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
         });
 
         setActiveSessions(formattedSessions);
@@ -91,16 +96,19 @@ const AllChats: React.FC<AllChatsProps> = ({
       });
 
       const sessionId = res.data.id; 
+    
       setActiveSessionId(sessionId);
       setActiveOtherUser(targetUsername);
 
       const alreadyActive = activeSessions.some(session => session.id === sessionId);
       if (!alreadyActive) {
-        setActiveSessions(prev => [...prev, { 
+
+        setActiveSessions(prev => [{ 
           id: sessionId, 
           username: targetUsername, 
-          last_message: res.data.last_message || "No messages yet" 
-        }]);
+          last_message: res.data.last_message || "No messages yet",
+          updated_at: new Date().toISOString()
+        }, ...prev]);
       }
 
       setUsers([]); 

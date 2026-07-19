@@ -24,3 +24,4 @@ class SessionOut(BaseModel):
     id: str
     participants: List[str]
     last_message: str = "No messages yet"
+    updated_at: datetime | None = None

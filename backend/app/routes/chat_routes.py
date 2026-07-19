@@ -1,4 +1,5 @@
-from datetime import datetime
+from datetime import datetime, timezone
+from bson import ObjectId
 from fastapi import APIRouter, Query
 from app.database import messages_collection, sessions_collection
 from app.models.chat_models import MsgCreate, MsgOut, SessionCreate, SessionOut
@@ -15,10 +16,18 @@ async def create_msg(message: MsgCreate):
         "user": message.user,
         "text": message.text,
         "session_id": message.session_id,
-        "timestamp": datetime.utcnow()
+        "timestamp": datetime.now(timezone.utc)
     }
 
     result = await messages_collection.insert_one(new_msg)
+
+
+    current_time = datetime.now(timezone.utc)
+    await sessions_collection.update_one(
+        {"_id": ObjectId(message.session_id)}, 
+        {"$set": {"last_message": message.text, "updated_at": current_time}}
+    )
+
 
     return {
         "id": str(result.inserted_id),
@@ -60,24 +69,29 @@ async def get_or_create_session(payload: SessionCreate):
         return {
             "id": str(existing_session["_id"]),
             "participants": existing_session["participants"],
-            "last_message": last_msg
+            "last_message": last_msg,
+            "updated_at": existing_session.get("updated_at", datetime.now(timezone.utc))
         }
 
+    current_time = datetime.now(timezone.utc)
     new_session = {
-        "participants": [payload.current_user, payload.target_user]
+        "participants": [payload.current_user, payload.target_user],
+        "updated_at": current_time
     }
     result = await sessions_collection.insert_one(new_session)
 
     return {
         "id": str(result.inserted_id),
         "participants": new_session["participants"],
-        "last_message": "No messages yet"
+        "last_message": "No messages yet",
+        "updated_at": current_time
     }
 
 
 @router.get("/sessions", response_model=list[SessionOut])
 async def get_user_sessions(username: str = Query(...)):
-    cursor = sessions_collection.find({"participants": username})
+
+    cursor = sessions_collection.find({"participants": username}).sort("updated_at", -1)
     sessions = await cursor.to_list(length=50)
 
     session_list = []
@@ -93,7 +107,8 @@ async def get_user_sessions(username: str = Query(...)):
         session_list.append({
             "id": session_id_str,
             "participants": s["participants"],
-            "last_message": last_msg[:25]
+            "last_message": last_msg[:25],
+            "updated_at": s.get("updated_at")
         })
 
     return session_list
