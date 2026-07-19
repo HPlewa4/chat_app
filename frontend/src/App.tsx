@@ -115,6 +115,7 @@ function App() {
                   />
                   <ChatWindow 
                     currentUser={currentUser} 
+                    setCurrentUser={setCurrentUser}
                     activeSessionId={activeSessionId} 
                     messages={messages}
                     onSendMessage={sendMessage}

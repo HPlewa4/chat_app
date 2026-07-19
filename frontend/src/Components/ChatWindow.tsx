@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import './ChatWindow.css';
 import Message from './Chat/Message';
 import ChatInput from './Chat/ChatInput';
+import ConversationBar from './Chat/ConversationBar';
 
 type MessageType = {
   id?: string;
@@ -13,12 +14,13 @@ interface User { username: string; email: string; }
 
 interface ChatWindowProps {
   currentUser: User | null;
+  setCurrentUser: (user: User | null) => void;
   activeSessionId: string | null;
   messages: MessageType[];
   onSendMessage: (text: string) => Promise<void>;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser, activeSessionId, messages, onSendMessage }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser, setCurrentUser, activeSessionId, messages, onSendMessage }) => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
@@ -40,6 +42,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser, activeSessionId, m
 
   return (
     <div className="chat-window">
+      <ConversationBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
       <div className="messages">
         {messages.map((m, i) => (
           <Message 
