@@ -23,7 +23,6 @@ const User = ({ name, last_message, searching, onClick }: UserProps) => {
             <span className="username">
               {name}
             </span>
-            {/* Moved inside user-info so it stacks below the username */}
             {last_message && (
               <div className="last-message">
                 {last_message}

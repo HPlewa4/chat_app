@@ -82,11 +82,11 @@ function App() {
     }
   };
   useEffect(() => {
-    if (!currentUser) return; // Only poll if logged in
+    if (!currentUser) return;
 
     const sidebarInterval = setInterval(() => {
       setRefreshTrigger(prev => prev + 1);
-    }, 3000); // Updates the sidebar every 3 seconds
+    }, 3000);
 
     return () => clearInterval(sidebarInterval);
   }, [currentUser]);
