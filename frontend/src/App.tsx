@@ -16,6 +16,7 @@ function App() {
   });
 
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const [activeOtherUser, setActiveOtherUser] = useState<string>("");
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
 
@@ -51,14 +52,6 @@ function App() {
     }, 3000); 
 
     return () => clearInterval(intervalId);
-  }, [activeSessionId]);
-
-  useEffect(() => {
-    if (!activeSessionId) {
-      setMessages([]);
-      return;
-    }
-    fetchMessages();
   }, [activeSessionId]);
 
   const sendMessage = async (text: string) => {
@@ -111,12 +104,14 @@ function App() {
                     currentUser={currentUser} 
                     setCurrentUser={setCurrentUser} 
                     setActiveSessionId={setActiveSessionId} 
+                    setActiveOtherUser={setActiveOtherUser}
                     refreshTrigger={refreshTrigger}
                   />
                   <ChatWindow 
                     currentUser={currentUser} 
                     setCurrentUser={setCurrentUser}
                     activeSessionId={activeSessionId} 
+                    activeOtherUser={activeOtherUser}
                     messages={messages}
                     onSendMessage={sendMessage}
                   />

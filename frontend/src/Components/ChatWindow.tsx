@@ -16,17 +16,24 @@ interface ChatWindowProps {
   currentUser: User | null;
   setCurrentUser: (user: User | null) => void;
   activeSessionId: string | null;
+  activeOtherUser: string;
   messages: MessageType[];
   onSendMessage: (text: string) => Promise<void>;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser, setCurrentUser, activeSessionId, messages, onSendMessage }) => {
+const ChatWindow: React.FC<ChatWindowProps> = ({ 
+  currentUser, 
+  setCurrentUser, 
+  activeSessionId, 
+  activeOtherUser, 
+  messages, 
+  onSendMessage 
+}) => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
-
 
   useEffect(() => {
     scrollToBottom();
@@ -42,7 +49,12 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser, setCurrentUser, ac
 
   return (
     <div className="chat-window">
-      <ConversationBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
+      <ConversationBar 
+        currentUser={currentUser} 
+        setCurrentUser={setCurrentUser} 
+        otherUser={activeOtherUser} 
+      />
+      
       <div className="messages">
         {messages.map((m, i) => (
           <Message 

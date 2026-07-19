@@ -6,7 +6,8 @@ import Search from './Sessions/Search';
 import API from "../api";
 import User from './Sessions/User';
 
-interface User {
+
+interface UserInterface {
   username: string;
   email: string;
 }
@@ -18,17 +19,19 @@ interface ChatSession {
 }
 
 interface AllChatsProps {
-  currentUser: User | null;
+  currentUser: UserInterface | null;
   setCurrentUser: (user: any) => void;
   setActiveSessionId: (id: string | null) => void;
   refreshTrigger: number;
+  setActiveOtherUser: (username: string) => void;
 }
 
 const AllChats: React.FC<AllChatsProps> = ({ 
   currentUser, 
   setCurrentUser, 
   setActiveSessionId,
-  refreshTrigger
+  refreshTrigger,
+  setActiveOtherUser
 }) => {
   const [users, setUsers] = useState<string[]>([]);
   const [activeSessions, setActiveSessions] = useState<ChatSession[]>([]);
@@ -80,30 +83,32 @@ const AllChats: React.FC<AllChatsProps> = ({
     }
   };
 
- const handleSelectUser = async (targetUsername: string) => {
-  try {
-    const res = await API.post("/chat/session", {
-      current_user: currentUser?.username,
-      target_user: targetUsername
-    });
+  const handleSelectUser = async (targetUsername: string) => {
+    try {
+      const res = await API.post("/chat/session", {
+        current_user: currentUser?.username,
+        target_user: targetUsername
+      });
 
-    const sessionId = res.data.id; 
-    setActiveSessionId(sessionId);
+      const sessionId = res.data.id; 
+      setActiveSessionId(sessionId);
+      setActiveOtherUser(targetUsername);
 
-    const alreadyActive = activeSessions.some(session => session.id === sessionId);
-    if (!alreadyActive) {
-      setActiveSessions(prev => [...prev, { 
-        id: sessionId, 
-        username: targetUsername, 
-        last_message: res.data.last_message || "No messages yet" 
-      }]);
+      const alreadyActive = activeSessions.some(session => session.id === sessionId);
+      if (!alreadyActive) {
+        setActiveSessions(prev => [...prev, { 
+          id: sessionId, 
+          username: targetUsername, 
+          last_message: res.data.last_message || "No messages yet" 
+        }]);
+      }
+
+      setUsers([]); 
+    } catch (err) {
+      console.error("Failed to start session:", err);
     }
+  };
 
-    setUsers([]); 
-  } catch (err) {
-    console.error("Failed to start session:", err);
-  }
-};
   return (
     <div className="all-chats">
       <Search onSearch={searchUsers} />
@@ -124,7 +129,10 @@ const AllChats: React.FC<AllChatsProps> = ({
               name={session.username} 
               last_message={session.last_message}
               searching={false}
-              onClick={() => setActiveSessionId(session.id)}
+              onClick={() => {
+                setActiveSessionId(session.id);
+                setActiveOtherUser(session.username); 
+              }}
             />
           ))}
         </div>  
