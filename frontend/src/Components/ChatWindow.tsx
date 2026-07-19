@@ -30,13 +30,28 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   onSendMessage 
 }) => {
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
+  const messagesContainerRef = useRef<HTMLDivElement | null>(null);
+  const isScrolledUp = useRef(false);
+
+  useEffect(() => {
+    isScrolledUp.current = false;
+  }, [activeSessionId]);
+
+  const handleScroll = () => {
+    if (!messagesContainerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+    
+    isScrolledUp.current = scrollHeight - scrollTop - clientHeight > 50;
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
-    scrollToBottom();
+    if (!isScrolledUp.current) {
+      scrollToBottom();
+    }
   }, [messages]);
 
   if (!activeSessionId) {
@@ -55,7 +70,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         otherUser={activeOtherUser} 
       />
       
-      <div className="messages">
+      <div className="messages" ref={messagesContainerRef} onScroll={handleScroll}>
         {messages.map((m, i) => (
           <Message 
             key={m.id || i} 
@@ -67,7 +82,11 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
         <div ref={messagesEndRef} />
       </div>
 
-      <ChatInput onSend={onSendMessage} />
+      <ChatInput onSend={async (text) => {
+        isScrolledUp.current = false; 
+        await onSendMessage(text);
+        scrollToBottom();
+      }} />
     </div>
   );
 };
