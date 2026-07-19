@@ -1,24 +1,65 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom';
 import './AllChats.css';
 import UserBar from './Sessions/UserBar';
 import Search from './Sessions/Search';
 import API from "../api";
-import SearchResult from './Sessions/SearchResult';
-
+import User from './Sessions/User';
 
 interface User {
   username: string;
   email: string;
 }
 
+interface ChatSession {
+  id: string;
+  username: string;
+  last_message: string;
+}
+
 interface AllChatsProps {
   currentUser: User | null;
   setCurrentUser: (user: any) => void;
+  setActiveSessionId: (id: string | null) => void;
+  refreshTrigger: number;
 }
 
-const AllChats: React.FC<AllChatsProps> = ({ currentUser,setCurrentUser }) => {
+const AllChats: React.FC<AllChatsProps> = ({ 
+  currentUser, 
+  setCurrentUser, 
+  setActiveSessionId,
+  refreshTrigger
+}) => {
   const [users, setUsers] = useState<string[]>([]);
+  const [activeSessions, setActiveSessions] = useState<ChatSession[]>([]);
+
+  useEffect(() => {
+    if (!currentUser?.username) return;
+
+    const fetchSessions = async () => {
+      try {
+        const res = await API.get('/chat/sessions', {
+          params: { username: currentUser.username }
+        });
+
+        const formattedSessions: ChatSession[] = res.data.map((session: any) => {
+          const otherUser = session.participants.find((p: string) => p !== currentUser.username);
+          return {
+            id: session.id,
+            username: otherUser || "Unknown User",
+            last_message: session.last_message
+          };
+        });
+
+        setActiveSessions(formattedSessions);
+      } catch (err) {
+        console.error("Failed to fetch sessions:", err);
+      }
+    };
+
+    fetchSessions();
+  }, [currentUser?.username, refreshTrigger]);
+  
   const searchUsers = async (query: string) => {
     if (!query.trim() || !currentUser?.email) {
       setUsers([]);
@@ -39,17 +80,56 @@ const AllChats: React.FC<AllChatsProps> = ({ currentUser,setCurrentUser }) => {
     }
   };
 
+ const handleSelectUser = async (targetUsername: string) => {
+  try {
+    const res = await API.post("/chat/session", {
+      current_user: currentUser?.username,
+      target_user: targetUsername
+    });
+
+    const sessionId = res.data.id; 
+    setActiveSessionId(sessionId);
+
+    const alreadyActive = activeSessions.some(session => session.id === sessionId);
+    if (!alreadyActive) {
+      setActiveSessions(prev => [...prev, { 
+        id: sessionId, 
+        username: targetUsername, 
+        last_message: res.data.last_message || "No messages yet" 
+      }]);
+    }
+
+    setUsers([]); 
+  } catch (err) {
+    console.error("Failed to start session:", err);
+  }
+};
   return (
     <div className="all-chats">
       <Search onSearch={searchUsers} />
       <div>
-  {users.map((user) => (
-    <SearchResult key={user} name={user} />
-  ))}
-</div>
+        {users.map((user) => (
+          <User key={`search-${user}`} 
+                name={user} 
+                searching={true}
+                onClick={() => handleSelectUser(user)} />
+        ))}
+      </div>
+      <div className="active-chats-list">
+        <h3>Recent Chats</h3>
+        {activeSessions.map((session) => (
+          <User 
+            key={`session-${session.id}`}
+            name={session.username} 
+            last_message={session.last_message}
+            searching={false}
+            onClick={() => setActiveSessionId(session.id)}
+          />
+        ))}
+      </div>
       <UserBar currentUser={currentUser} setCurrentUser={setCurrentUser} />
     </div>
   )
 }
 
-export default AllChats
+export default AllChats;

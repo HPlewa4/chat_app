@@ -3,12 +3,11 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-d
 import AllChats from './Components/AllChats';
 import ChatWindow from './Components/ChatWindow';
 import Login from './Components/Login';
+import API from './api';
 import './App.css';
 
-interface User {
-  username: string;
-  email: string;
-}
+interface User { username: string; email: string; }
+type MessageType = { id?: string; user: string; text: string; };
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
@@ -16,12 +15,87 @@ function App() {
     return savedUser ? JSON.parse(savedUser) : null;
   });
 
+  const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
+  const [messages, setMessages] = useState<MessageType[]>([]);
+  const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
+
   useEffect(() => {
     if (currentUser) {
       localStorage.setItem('chat_user', JSON.stringify(currentUser));
     } else {
       localStorage.removeItem('chat_user');
     }
+  }, [currentUser]);
+
+  const fetchMessages = async () => {
+      try {
+        const res = await API.get<MessageType[]>('/chat/messages', {
+          params: { session_id: activeSessionId }
+        });
+        setMessages(res.data);
+      } catch (err) {
+        console.error("Failed to fetch messages", err);
+      }
+    };
+    
+  useEffect(() => {
+    if (!activeSessionId) {
+      setMessages([]);
+      return;
+    }
+
+    fetchMessages();
+
+    const intervalId = setInterval(() => {
+      fetchMessages();
+    }, 3000); 
+
+    return () => clearInterval(intervalId);
+  }, [activeSessionId]);
+
+  useEffect(() => {
+    if (!activeSessionId) {
+      setMessages([]);
+      return;
+    }
+    fetchMessages();
+  }, [activeSessionId]);
+
+  const sendMessage = async (text: string) => {
+    if (!activeSessionId || !currentUser) return;
+
+    const newMsg = { 
+      user: currentUser.username, 
+      text,
+      session_id: activeSessionId 
+    };
+    
+    setMessages(prev => [...prev, newMsg]);
+
+    try {
+      const res = await API.post<{ id: string }>('/chat/message', newMsg);
+      await fetchMessages();
+      setMessages(prev =>
+        prev.map(msg => 
+          msg.text === text && msg.user === currentUser.username && !msg.id
+            ? { ...msg, id: res.data.id } 
+            : msg
+        )
+      );
+
+      setRefreshTrigger(prev => prev + 1);
+    } catch (err) {
+      console.error("Failed to send message", err);
+    }
+  };
+  useEffect(() => {
+    if (!currentUser) return; // Only poll if logged in
+
+    const sidebarInterval = setInterval(() => {
+      setRefreshTrigger(prev => prev + 1);
+    }, 3000); // Updates the sidebar every 3 seconds
+
+    return () => clearInterval(sidebarInterval);
   }, [currentUser]);
 
   return (
@@ -33,27 +107,29 @@ function App() {
             element={
               currentUser ? (
                 <div style={{ display: 'flex' }} className="App">
-                  <AllChats currentUser={currentUser} setCurrentUser={setCurrentUser} />
-                  <ChatWindow currentUser={currentUser} />
+                  <AllChats 
+                    currentUser={currentUser} 
+                    setCurrentUser={setCurrentUser} 
+                    setActiveSessionId={setActiveSessionId} 
+                    refreshTrigger={refreshTrigger}
+                  />
+                  <ChatWindow 
+                    currentUser={currentUser} 
+                    activeSessionId={activeSessionId} 
+                    messages={messages}
+                    onSendMessage={sendMessage}
+                  />
                 </div>
               ) : (
                 <Navigate to="/login" replace />
               )
             } 
           />
-
           <Route 
             path="/login" 
-            element={
-              !currentUser ? (
-                <Login setCurrentUser={setCurrentUser} />
-              ) : (
-                <Navigate to="/" replace />
-              )
-            } 
+            element={!currentUser ? <Login setCurrentUser={setCurrentUser} /> : <Navigate to="/" replace />} 
           />
         </Routes>
-        
       </div>
     </Router>
   );

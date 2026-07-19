@@ -1,62 +1,41 @@
-import React, { useState, useEffect, useRef } from 'react'
-import './ChatWindow.css'
-import Message from './Chat/Message'
-import ChatInput from './Chat/ChatInput'
-import API from '../api'
+import React, { useEffect, useRef } from 'react';
+import './ChatWindow.css';
+import Message from './Chat/Message';
+import ChatInput from './Chat/ChatInput';
 
 type MessageType = {
-  id?: string
-  user: string
-  text: string
-}
-interface User {
-  username: string;
-  email: string;
-}
+  id?: string;
+  user: string;
+  text: string;
+};
+
+interface User { username: string; email: string; }
 
 interface ChatWindowProps {
   currentUser: User | null;
+  activeSessionId: string | null;
+  messages: MessageType[];
+  onSendMessage: (text: string) => Promise<void>;
 }
 
-const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser }) => {
-  const [messages, setMessages] = useState<MessageType[]>([])
-  
-  const messagesEndRef = useRef<HTMLDivElement | null>(null)
+const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser, activeSessionId, messages, onSendMessage }) => {
+  const messagesEndRef = useRef<HTMLDivElement | null>(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" })
-  }
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
 
   useEffect(() => {
-    scrollToBottom()
-  }, [messages])
+    scrollToBottom();
+  }, [messages]);
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const res = await API.get<MessageType[]>('/chat/messages')
-        setMessages(res.data)
-      } catch (err) {
-        console.error("Failed to fetch messages", err)
-      }
-    }
-    fetchMessages()
-  }, [])
-
-  const addMessage = async (text: string) => {
-    const newMsg: MessageType = { user: currentUser?.username || 'Unknown User', text }
-    setMessages(prev => [...prev, newMsg])
-
-    try {
-      const res = await API.post<{ id: string }>('/chat/message', newMsg)
-      setMessages(prev =>
-        prev.map(msg =>
-          msg === newMsg ? { ...msg, id: res.data.id } : msg
-        )
-      )
-    } catch (err) {
-      console.error("Failed to send message", err)
-    }
+  if (!activeSessionId) {
+    return (
+      <div className="chat-window no-session" style={{ padding: '20px', textAlign: 'center' }}>
+        <h3>Select a conversation to start messaging</h3>
+      </div>
+    );
   }
 
   return (
@@ -64,17 +43,18 @@ const ChatWindow: React.FC<ChatWindowProps> = ({ currentUser }) => {
       <div className="messages">
         {messages.map((m, i) => (
           <Message 
-              key={m.id || i} 
-              user={m.user} 
-              text={m.text} 
-              currentUser={currentUser?.username || ''}/>
+            key={m.id || i} 
+            user={m.user} 
+            text={m.text} 
+            currentUser={currentUser?.username || ''}
+          />
         ))}
         <div ref={messagesEndRef} />
       </div>
 
-      <ChatInput onSend={addMessage} />
+      <ChatInput onSend={onSendMessage} />
     </div>
-  )
-}
+  );
+};
 
-export default ChatWindow
+export default ChatWindow;
