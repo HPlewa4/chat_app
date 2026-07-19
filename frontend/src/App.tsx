@@ -4,7 +4,6 @@ import AllChats from './Components/AllChats';
 import ChatWindow from './Components/ChatWindow';
 import Login from './Components/Login';
 import './App.css';
-import Test from './Components/Test';
 
 interface User {
   username: string;
@@ -52,10 +51,6 @@ function App() {
                 <Navigate to="/" replace />
               )
             } 
-          />
-          <Route 
-            path="/test"
-            element={<Test />}  
           />
         </Routes>
         
