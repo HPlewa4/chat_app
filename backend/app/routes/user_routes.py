@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, Query, status
 from app.database import users_collection
 from app.models.user_models import UserRegister, UserLogin
 from app.auth import hash_password, verify_password
@@ -50,3 +50,32 @@ async def login_user(user: UserLogin):
         "email": db_user["email"],
         "username": db_user["username"]
     }
+
+@router.get("/search", response_model=list[str])
+async def search_users(
+    q: str = Query(...),
+    current_email: str = Query(...)
+):
+    users = await users_collection.find(
+        {
+            "$and": [
+                {
+                    "username": {
+                        "$regex": q,
+                        "$options": "i"
+                    }
+                },
+                {
+                    "email": {
+                        "$ne": current_email
+                    }
+                }
+            ]
+        },
+        {
+            "_id": 0,
+            "username": 1
+        }
+    ).to_list(length=20)
+
+    return [user["username"] for user in users]
