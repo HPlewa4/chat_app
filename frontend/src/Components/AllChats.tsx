@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react'
-import { Link } from 'react-router-dom';
 import './AllChats.css';
 import UserBar from './Sessions/UserBar';
 import Search from './Sessions/Search';

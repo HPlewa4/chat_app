@@ -1,6 +1,6 @@
 import React, { useState, KeyboardEvent } from 'react'
 import './ChatInput.css'
-import { Send, SendHorizonal } from 'lucide-react'
+import { Send } from 'lucide-react'
 
 type ChatInputProps = {
   onSend: (text: string) => void

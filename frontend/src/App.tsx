@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import AllChats from './Components/AllChats';
 import ChatWindow from './Components/ChatWindow';
@@ -28,17 +28,17 @@ function App() {
     }
   }, [currentUser]);
 
-  const fetchMessages = async () => {
-      try {
-        const res = await API.get<MessageType[]>('/chat/messages', {
-          params: { session_id: activeSessionId }
-        });
-        setMessages(res.data);
-      } catch (err) {
-        console.error("Failed to fetch messages", err);
-      }
-    };
-    
+  const fetchMessages = useCallback(async () => {
+    try {
+      const res = await API.get<MessageType[]>('/chat/messages', {
+        params: { session_id: activeSessionId }
+      });
+      setMessages(res.data);
+    } catch (err) {
+      console.error("Failed to fetch messages", err);
+    }
+  }, [activeSessionId]);
+
   useEffect(() => {
     if (!activeSessionId) {
       setMessages([]);
@@ -52,7 +52,7 @@ function App() {
     }, 3000); 
 
     return () => clearInterval(intervalId);
-  }, [activeSessionId]);
+  }, [activeSessionId, fetchMessages]);
 
   const sendMessage = async (text: string) => {
     if (!activeSessionId || !currentUser) return;
@@ -81,6 +81,7 @@ function App() {
       console.error("Failed to send message", err);
     }
   };
+
   useEffect(() => {
     if (!currentUser) return;
 

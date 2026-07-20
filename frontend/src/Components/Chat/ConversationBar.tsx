@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { User as UserIcon, Ellipsis } from 'lucide-react';
 import './ConversationBar.css';
 interface User {
@@ -14,15 +14,7 @@ interface ConversationBarProps {
   onToggleSettings?: () => void;
 }
 
-const ConversationBar: React.FC<ConversationBarProps> = ({ currentUser, setCurrentUser, otherUser, onToggleSettings }) => {
-  const navigate = useNavigate();
-
-  const handleLogout = (e: React.MouseEvent) => {
-    e.preventDefault(); 
-    setCurrentUser(null);
-    localStorage.removeItem('chat_user');
-    navigate('/login');
-  };
+const ConversationBar: React.FC<ConversationBarProps> = ({ currentUser, otherUser, onToggleSettings }) => {
 
   return (
    <div className="main-bar">
