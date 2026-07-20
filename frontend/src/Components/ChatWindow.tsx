@@ -30,16 +30,15 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   messages, 
   onSendMessage 
 }) => {
+
   const [showSettings, setShowSettings] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
   const isScrolledUp = useRef(false);
+  
   const toggleSettings = () => {
     setShowSettings(prev => !prev);
   };
-  useEffect(() => {
-    isScrolledUp.current = false;
-  }, [activeSessionId]);
 
   const handleScroll = () => {
     if (!messagesContainerRef.current) return;
@@ -57,6 +56,10 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       scrollToBottom();
     }
   }, [messages]);
+
+  useEffect(() => {
+    isScrolledUp.current = false;
+  }, [activeSessionId]);
 
   if (!activeSessionId) {
     return (

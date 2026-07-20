@@ -20,13 +20,6 @@ function App() {
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
 
-  useEffect(() => {
-    if (currentUser) {
-      localStorage.setItem('chat_user', JSON.stringify(currentUser));
-    } else {
-      localStorage.removeItem('chat_user');
-    }
-  }, [currentUser]);
 
   const fetchMessages = useCallback(async () => {
     try {
@@ -38,21 +31,6 @@ function App() {
       console.error("Failed to fetch messages", err);
     }
   }, [activeSessionId]);
-
-  useEffect(() => {
-    if (!activeSessionId) {
-      setMessages([]);
-      return;
-    }
-
-    fetchMessages();
-
-    const intervalId = setInterval(() => {
-      fetchMessages();
-    }, 3000); 
-
-    return () => clearInterval(intervalId);
-  }, [activeSessionId, fetchMessages]);
 
   const sendMessage = async (text: string) => {
     if (!activeSessionId || !currentUser) return;
@@ -81,6 +59,29 @@ function App() {
       console.error("Failed to send message", err);
     }
   };
+
+  useEffect(() => {
+    if (currentUser) {
+      localStorage.setItem('chat_user', JSON.stringify(currentUser));
+    } else {
+      localStorage.removeItem('chat_user');
+    }
+  }, [currentUser]);
+
+  useEffect(() => {
+    if (!activeSessionId) {
+      setMessages([]);
+      return;
+    }
+
+    fetchMessages();
+
+    const intervalId = setInterval(() => {
+      fetchMessages();
+    }, 3000); 
+
+    return () => clearInterval(intervalId);
+  }, [activeSessionId, fetchMessages]);
 
   useEffect(() => {
     if (!currentUser) return;

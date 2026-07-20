@@ -35,38 +35,6 @@ const AllChats: React.FC<AllChatsProps> = ({
   const [users, setUsers] = useState<string[]>([]);
   const [activeSessions, setActiveSessions] = useState<ChatSession[]>([]);
 
-  useEffect(() => {
-    if (!currentUser?.username) return;
-
-    const fetchSessions = async () => {
-      try {
-        const res = await API.get('/chat/sessions', {
-          params: { username: currentUser.username }
-        });
-
-        const formattedSessions: ChatSession[] = res.data.map((session: any) => {
-          const otherUser = session.participants.find((p: string) => p !== currentUser.username);
-          return {
-            id: session.id,
-            username: otherUser || "Unknown User",
-            last_message: session.last_message,
-            updated_at: session.updated_at || new Date(0).toISOString() 
-          };
-        });
-
-        formattedSessions.sort((a, b) => {
-          return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
-        });
-
-        setActiveSessions(formattedSessions);
-      } catch (err) {
-        console.error("Failed to fetch sessions:", err);
-      }
-    };
-
-    fetchSessions();
-  }, [currentUser?.username, refreshTrigger]);
-  
   const searchUsers = async (query: string) => {
     if (!query.trim() || !currentUser?.email) {
       setUsers([]);
@@ -115,6 +83,37 @@ const AllChats: React.FC<AllChatsProps> = ({
       console.error("Failed to start session:", err);
     }
   };
+
+  useEffect(() => {
+    if (!currentUser?.username) return;
+
+    const fetchSessions = async () => {
+      try {
+        const res = await API.get('/chat/sessions', {
+          params: { username: currentUser.username }
+        });
+
+        const formattedSessions: ChatSession[] = res.data.map((session: any) => {
+          const otherUser = session.participants.find((p: string) => p !== currentUser.username);
+          return {
+            id: session.id,
+            username: otherUser || "Unknown User",
+            last_message: session.last_message,
+            updated_at: session.updated_at || new Date(0).toISOString() 
+          };
+        });
+
+        formattedSessions.sort((a, b) => {
+          return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+        });
+
+        setActiveSessions(formattedSessions);
+      } catch (err) {
+        console.error("Failed to fetch sessions:", err);
+      }
+    };
+    fetchSessions();
+  }, [currentUser?.username, refreshTrigger]);
 
   return (
     <div className="all-chats">
