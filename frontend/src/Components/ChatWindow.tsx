@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './ChatWindow.css';
 import Message from './Chat/Message';
 import ChatInput from './Chat/ChatInput';
 import ConversationBar from './Chat/ConversationBar';
+import ChatSettings from './Chat/ChatSettings';
 
 type MessageType = {
   id?: string;
@@ -29,10 +30,13 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   messages, 
   onSendMessage 
 }) => {
+  const [showSettings, setShowSettings] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
   const isScrolledUp = useRef(false);
-
+  const toggleSettings = () => {
+    setShowSettings(prev => !prev);
+  };
   useEffect(() => {
     isScrolledUp.current = false;
   }, [activeSessionId]);
@@ -64,29 +68,36 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
 
   return (
     <div className="chat-window">
-      <ConversationBar 
-        currentUser={currentUser} 
-        setCurrentUser={setCurrentUser} 
-        otherUser={activeOtherUser} 
-      />
-      
-      <div className="messages" ref={messagesContainerRef} onScroll={handleScroll}>
-        {messages.map((m, i) => (
-          <Message 
-            key={m.id || i} 
-            user={m.user} 
-            text={m.text} 
-            currentUser={currentUser?.username || ''}
-          />
-        ))}
-        <div ref={messagesEndRef} />
+      <div className="chat-main-content">
+        <ConversationBar 
+          currentUser={currentUser} 
+          setCurrentUser={setCurrentUser} 
+          otherUser={activeOtherUser} 
+          onToggleSettings={toggleSettings}
+        />
+        
+        <div className="messages" ref={messagesContainerRef} onScroll={handleScroll}>
+          {messages.map((m, i) => (
+            <Message 
+              key={m.id || i} 
+              user={m.user} 
+              text={m.text} 
+              currentUser={currentUser?.username || ''}
+            />
+          ))}
+          <div ref={messagesEndRef} />
+        </div>
+
+        <ChatInput onSend={async (text) => {
+          isScrolledUp.current = false; 
+          await onSendMessage(text);
+          scrollToBottom();
+        }} />
       </div>
 
-      <ChatInput onSend={async (text) => {
-        isScrolledUp.current = false; 
-        await onSendMessage(text);
-        scrollToBottom();
-      }} />
+      <div className={`settings-sidebar ${showSettings ? 'open' : ''}`}>
+        <ChatSettings />
+      </div>
     </div>
   );
 };

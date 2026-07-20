@@ -24,3 +24,45 @@
   background-color: #3d71aa;
   border-radius: 10px;
 }
+/* Update the main container to layout components horizontally */
+.chat-window {
+  display: flex;
+  flex-direction: row; /* Layout components side-by-side */
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Create a wrapper for the actual chat content (Bar, Messages, Input) */
+.chat-main-content {
+  flex: 1; /* Takes up all remaining space */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: all 0.3s ease-in-out; /* Smoothly shrinks when sidebar appears */
+}
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Settings Side Panel Styles */
+.settings-sidebar {
+  height: 100%;
+  background-color: #ffffff;
+  border-left: 1px solid #e0e0e0; /* Optional: adds a nice separation line */
+  
+  /* The Magic: Smoothly animate the width from 0 to 300px */
+  width: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: width 0.3s ease-in-out, opacity 0.2s ease-in-out, visibility 0.3s;
+}
+
+/* Active class when showSettings is true */
+.settings-sidebar.open {
+  width: 300px; /* Adjust the panel width here */
+  opacity: 1;
+  visibility: visible;
+}

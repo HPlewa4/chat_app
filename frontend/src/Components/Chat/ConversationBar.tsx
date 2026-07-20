@@ -11,9 +11,10 @@ interface ConversationBarProps {
   currentUser: User | null;
   setCurrentUser: (user: User | null) => void;
   otherUser: string;
+  onToggleSettings?: () => void;
 }
 
-const ConversationBar: React.FC<ConversationBarProps> = ({ currentUser, setCurrentUser, otherUser }) => {
+const ConversationBar: React.FC<ConversationBarProps> = ({ currentUser, setCurrentUser, otherUser, onToggleSettings }) => {
   const navigate = useNavigate();
 
   const handleLogout = (e: React.MouseEvent) => {
@@ -39,7 +40,7 @@ const ConversationBar: React.FC<ConversationBarProps> = ({ currentUser, setCurre
 
       {currentUser ? (
         <button
-          onClick={()=>{}}
+          onClick={onToggleSettings}
           className="conversation-button"
         >
           <Ellipsis size={16} />
