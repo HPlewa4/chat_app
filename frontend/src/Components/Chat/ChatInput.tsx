@@ -1,5 +1,6 @@
 import React, { useState, KeyboardEvent } from 'react'
 import './ChatInput.css'
+import { Send, SendHorizonal } from 'lucide-react'
 
 type ChatInputProps = {
   onSend: (text: string) => void
@@ -33,7 +34,7 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
       />
 
       <button className="send" onClick={handleSend}>
-        Send
+        <Send/>
       </button>
     </div>
   )

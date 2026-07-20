@@ -38,7 +38,7 @@
 }
 
 .active-chats-list.has-search-results .active-sessions {
-  max-height: 200px;
+  max-height: 550px;
 }
 
 .scrollable-element::-webkit-scrollbar {
