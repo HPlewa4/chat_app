@@ -23,5 +23,24 @@
     "passwordsDoNotMatch": "Hasła nie są takie same!",
     "accountCreated": "Konto zostało utworzone!",
     "authenticationFailed": "Uwierzytelnianie nie powiodło się"
+  },
+  "search": {
+    "loadingProfile": "Ładowanie profilu użytkownika...",
+    "searchUsers": "Szukaj użytkowników..."
+  },
+  "userBar": {
+    "guest": "Gość",
+    "login": "Zaloguj się",
+    "logout": "Wyloguj się"
+  },
+  "conversationBar": {
+    "login": "Zaloguj się"
+  },
+  "chatInput": {
+    "placeholder": "Napisz wiadomość..."
+  },
+  "chatSettings": {
+    "title": "Ustawienia czatu",
+    "description": "Dostosuj swoje doświadczenie czatu tutaj."
   }
 }

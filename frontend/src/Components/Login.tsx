@@ -9,20 +9,23 @@ interface AuthResponse {
   email?: string;
   id?: string;
 }
+
 interface LoginProps {
   setCurrentUser: (user: any) => void;
 }
+
 interface User {
   username: string | undefined;
   email: string | undefined;
 }
+
 export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
   const [isRegistering, setIsRegistering] = useState<boolean>(false);
   const [email, setEmail] = useState<string>("");
   const [username, setUsername] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
-  
+
   const navigate = useNavigate();
   const { t } = useTranslation();
 
@@ -30,7 +33,7 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
     try {
       if (isRegistering) {
         if (password !== confirmPassword) {
-          alert("Passwords do not match!");
+          alert(t("login.passwordsDoNotMatch"));
           return;
         }
 
@@ -38,101 +41,142 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
           username,
           email,
           password,
-          confirm_password: confirmPassword
+          confirm_password: confirmPassword,
         });
+
         const loggedInUser: User = {
           username: response.data.username,
-          email: response.data.email
+          email: response.data.email,
         };
+
         setCurrentUser(loggedInUser);
         navigate("/");
-          
-        
-        alert("Account created!");
+
+        alert(t("login.accountCreated"));
       } else {
         const response = await API.post<AuthResponse>("/users/login", {
           email,
-          password
+          password,
         });
+
         const loggedInUser: User = {
           username: response.data.username,
-          email: response.data.email
+          email: response.data.email,
         };
+
         setCurrentUser(loggedInUser);
         navigate("/");
       }
     } catch (error: any) {
       console.error(error);
-      const errorDetail = error.response?.data?.detail || "Authentication failed";
+
+      const errorDetail =
+        error.response?.data?.detail || t("login.authenticationFailed");
+
       alert(errorDetail);
     }
   };
 
   return (
-    <div className="auth-container" style={{ padding: '20px', maxWidth: '400px', margin: 'auto' }}>
-      <h2>{isRegistering ? "Register" : "Login"}</h2>
+    <div
+      className="auth-container"
+      style={{ padding: "20px", maxWidth: "400px", margin: "auto" }}
+    >
+      <h2>
+        {isRegistering
+          ? t("login.titleRegister")
+          : t("login.titleLogin")}
+      </h2>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          gap: "10px",
+        }}
+      >
         {isRegistering && (
           <input
-            placeholder="Username"
+            placeholder={t("login.username")}
             value={username}
             style={{ padding: "10px 0" }}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setUsername(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setUsername(e.target.value)
+            }
           />
         )}
 
         <input
           type="email"
-          placeholder="Email"
+          placeholder={t("login.email")}
           value={email}
           autoComplete="email"
           style={{ padding: "10px 0" }}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setEmail(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setEmail(e.target.value)
+          }
         />
 
         <input
           type="password"
-          placeholder="Password"
+          placeholder={t("login.password")}
           value={password}
           style={{ padding: "10px 0" }}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
+          onChange={(e: ChangeEvent<HTMLInputElement>) =>
+            setPassword(e.target.value)
+          }
         />
 
         {isRegistering && (
           <input
             type="password"
-            placeholder="Confirm Password"
+            placeholder={t("login.confirmPassword")}
             value={confirmPassword}
             style={{ padding: "10px 0" }}
-            onChange={(e: ChangeEvent<HTMLInputElement>) => setConfirmPassword(e.target.value)}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setConfirmPassword(e.target.value)
+            }
           />
         )}
 
         <button onClick={handleAuth}>
-          {isRegistering ? "Sign Up" : "Log In"}
+          {isRegistering
+            ? t("login.registerButton")
+            : t("login.loginButton")}
         </button>
       </div>
 
       <div style={{ marginTop: "20px", fontSize: "14px" }}>
         {isRegistering ? (
           <span>
-            Already have an account?{" "}
-            <button 
-              style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', textDecoration: 'underline' }}
+            {t("login.alreadyHaveAccount")}{" "}
+            <button
+              style={{
+                background: "none",
+                border: "none",
+                color: "white",
+                cursor: "pointer",
+                textDecoration: "underline",
+              }}
               onClick={() => setIsRegistering(false)}
             >
-              Log in here
+              {t("login.loginHere")}
             </button>
           </span>
         ) : (
           <span>
-            Don't have an account?{" "}
-            <button 
-              style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer', textDecoration: 'underline' }}
+            {t("login.dontHaveAccount")}{" "}
+            <button
+              style={{
+                background: "none",
+                border: "none",
+                color: "white",
+                cursor: "pointer",
+                textDecoration: "underline",
+              }}
               onClick={() => setIsRegistering(true)}
             >
-              Register here
+              {t("login.registerHere")}
             </button>
           </span>
         )}

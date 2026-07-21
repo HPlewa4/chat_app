@@ -75,7 +75,7 @@ const AllChats: React.FC<AllChatsProps> = ({
         setActiveSessions(prev => [{ 
           id: sessionId, 
           username: targetUsername, 
-          last_message: res.data.last_message || "No messages yet",
+          last_message: res.data.last_message || t("allChats.noMessages"),
           updated_at: new Date().toISOString()
         }, ...prev]);
       }
@@ -99,7 +99,7 @@ const AllChats: React.FC<AllChatsProps> = ({
           const otherUser = session.participants.find((p: string) => p !== currentUser.username);
           return {
             id: session.id,
-            username: otherUser || "Unknown User",
+            username: otherUser || t("allChats.unknownUser"),
             last_message: session.last_message,
             updated_at: session.updated_at || new Date(0).toISOString() 
           };
@@ -129,7 +129,7 @@ const AllChats: React.FC<AllChatsProps> = ({
         ))}
       </div>
       <div className={`active-chats-list ${users.length > 0 ? 'has-search-results' : ''}`}>
-        <h3>Recent Chats</h3>
+        <h3>{t("allChats.recentChats")}</h3>
         <div className="scrollable-element active-sessions">
           {activeSessions.map((session) => (
             <User 

@@ -66,7 +66,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   if (!activeSessionId) {
     return (
       <div className="chat-window no-session" style={{ padding: '20px', textAlign: 'center' }}>
-        <h3>Select a conversation to start messaging</h3>
+        <h3>{t("chatWindow.selectConversation")}</h3>
       </div>
     );
   }

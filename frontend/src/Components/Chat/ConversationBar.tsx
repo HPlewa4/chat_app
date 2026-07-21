@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { User as UserIcon, Ellipsis } from 'lucide-react';
+import { useTranslation } from "react-i18next";
 import './ConversationBar.css';
+
 interface User {
   username: string;
   email: string;
@@ -14,10 +16,15 @@ interface ConversationBarProps {
   onToggleSettings?: () => void;
 }
 
-const ConversationBar: React.FC<ConversationBarProps> = ({ currentUser, otherUser, onToggleSettings }) => {
+const ConversationBar: React.FC<ConversationBarProps> = ({
+  currentUser,
+  otherUser,
+  onToggleSettings
+}) => {
+  const { t } = useTranslation();
 
   return (
-   <div className="main-bar">
+    <div className="main-bar">
       <div className="user-section">
         <div className="user-icon-container">
           <UserIcon size={18} color="white" />
@@ -39,7 +46,7 @@ const ConversationBar: React.FC<ConversationBarProps> = ({ currentUser, otherUse
         </button>
       ) : (
         <Link to="/login" className="login-link">
-          Log In
+          {t("conversationBar.login")}
         </Link>
       )}
     </div>

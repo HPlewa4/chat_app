@@ -23,5 +23,24 @@
     "passwordsDoNotMatch": "Passwords do not match!",
     "accountCreated": "Account created!",
     "authenticationFailed": "Authentication failed"
+  },
+  "search": {
+    "loadingProfile": "Loading user profile...",
+    "searchUsers": "Search users..."
+  },
+  "userBar": {
+    "guest": "Guest",
+    "login": "Log In",
+    "logout": "Log out"
+  },
+  "conversationBar": {
+    "login": "Log In"
+  },
+  "chatInput": {
+    "placeholder": "Type a message..."
+  },
+  "chatSettings": {
+    "title": "Chat Settings",
+    "description": "Customize your chat experience here."
   }
 }

@@ -1,26 +1,28 @@
-import React, { useState, KeyboardEvent } from 'react'
-import './ChatInput.css'
-import { Send } from 'lucide-react'
+import React, { useState, KeyboardEvent } from 'react';
+import { useTranslation } from "react-i18next";
+import './ChatInput.css';
+import { Send } from 'lucide-react';
 
 type ChatInputProps = {
-  onSend: (text: string) => void
-}
+  onSend: (text: string) => void;
+};
 
 const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
-  const [text, setText] = useState<string>("")
+  const [text, setText] = useState<string>("");
+  const { t } = useTranslation();
 
   const handleSend = () => {
-    if (!text.trim()) return
-    onSend(text)
-    setText("")
-  }
+    if (!text.trim()) return;
+    onSend(text);
+    setText("");
+  };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      e.preventDefault()
-      handleSend()
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSend();
     }
-  }
+  };
 
   return (
     <div className="chat-input">
@@ -30,14 +32,14 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSend }) => {
         value={text}
         onChange={(e) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
-        placeholder="Type a message..."
+        placeholder={t("chatInput.placeholder")}
       />
 
       <button className="send" onClick={handleSend}>
-        <Send/>
+        <Send />
       </button>
     </div>
-  )
-}
+  );
+};
 
-export default ChatInput
+export default ChatInput;

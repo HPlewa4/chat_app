@@ -1,13 +1,16 @@
-import React from 'react'
-import './ChatSettings.css'
+import React from 'react';
+import { useTranslation } from "react-i18next";
+import './ChatSettings.css';
 
 const ChatSettings = () => {
+  const { t } = useTranslation();
+
   return (
     <div className="chat-settings">
-      <h3>Chat Settings</h3>
-      <p>Customize your chat experience here.</p>
+      <h3>{t("chatSettings.title")}</h3>
+      <p>{t("chatSettings.description")}</p>
     </div>
-  )
-}
+  );
+};
 
-export default ChatSettings
+export default ChatSettings;
