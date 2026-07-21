@@ -46,8 +46,8 @@ const ConversationBar: React.FC<ConversationBarProps> = ({
         </button>
       ) : (
         <Link to="/login" className="login-link">
-          {t("conversationBar.login")}
-        </Link>
+          {t("logging.login")}
+        </Link> 
       )}
     </div>
   );

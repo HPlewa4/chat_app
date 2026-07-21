@@ -29,18 +29,25 @@
     "searchUsers": "Search users..."
   },
   "userBar": {
-    "guest": "Guest",
+    "guest": "Guest"
+  },
+  "logging": {
     "login": "Log In",
     "logout": "Log out"
   },
-  "conversationBar": {
-    "login": "Log In"
-  },
+
   "chatInput": {
     "placeholder": "Type a message..."
   },
   "chatSettings": {
     "title": "Chat Settings",
     "description": "Customize your chat experience here."
+  },
+  "settings": {
+    "title": "Settings",
+    "description": "Manage your account settings here.",
+    "language": "Change Language",
+    "settings": "settings",
+    "close": "close"
   }
 }

@@ -29,12 +29,11 @@
     "searchUsers": "Szukaj użytkowników..."
   },
   "userBar": {
-    "guest": "Gość",
+    "guest": "Gość"
+  },
+  "logging": {
     "login": "Zaloguj się",
     "logout": "Wyloguj się"
-  },
-  "conversationBar": {
-    "login": "Zaloguj się"
   },
   "chatInput": {
     "placeholder": "Napisz wiadomość..."
@@ -42,5 +41,12 @@
   "chatSettings": {
     "title": "Ustawienia czatu",
     "description": "Dostosuj swoje doświadczenie czatu tutaj."
-  }
+  },
+    "settings": {
+    "title": "Ustawienia",
+    "description": "Zarządzaj ustawieniami konta tutaj.",
+    "language": "Zmień język",
+    "settings": "ustawienia",
+    "close": "zamknij"
+    }
 }

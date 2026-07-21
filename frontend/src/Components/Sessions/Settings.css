@@ -1,0 +1,39 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 400px;
+  width: 88%;
+  text-align: center;
+  background-color:navy;
+  padding: 20px;
+  bottom: 400px;
+}
+h2 {
+  margin-bottom: 0;
+
+}
+
+
+.header-wrapper, .language-selector, .logout-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    margin: 10px;
+}
+
+select, #language{
+    margin: 0;
+    padding: 0;
+}
+
+.language-selector{
+    margin: 0;
+}
+
+
+.logout-text{
+    display: flex;
+    align-items: center;
+}
