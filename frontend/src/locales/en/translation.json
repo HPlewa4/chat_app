@@ -1,0 +1,27 @@
+{
+  "allChats": {
+    "recentChats": "Recent Chats",
+    "noMessages": "No messages yet",
+    "unknownUser": "Unknown User"
+  },
+  "chatWindow": {
+    "selectConversation": "Select a conversation to start messaging"
+  },
+  "login": {
+    "titleLogin": "Login",
+    "titleRegister": "Register",
+    "username": "Username",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm Password",
+    "loginButton": "Log In",
+    "registerButton": "Sign Up",
+    "alreadyHaveAccount": "Already have an account?",
+    "loginHere": "Log in here",
+    "dontHaveAccount": "Don't have an account?",
+    "registerHere": "Register here",
+    "passwordsDoNotMatch": "Passwords do not match!",
+    "accountCreated": "Account created!",
+    "authenticationFailed": "Authentication failed"
+  }
+}

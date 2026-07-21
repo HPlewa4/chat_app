@@ -1,4 +1,5 @@
 import React, { useState, ChangeEvent, JSX } from "react";
+import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import API from "../api";
 
@@ -23,6 +24,7 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
   const [confirmPassword, setConfirmPassword] = useState<string>("");
   
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   const handleAuth = async (): Promise<void> => {
     try {

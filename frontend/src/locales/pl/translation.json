@@ -1,0 +1,27 @@
+{
+  "allChats": {
+    "recentChats": "Ostatnie czaty",
+    "noMessages": "Brak wiadomości",
+    "unknownUser": "Nieznany użytkownik"
+  },
+  "chatWindow": {
+    "selectConversation": "Wybierz rozmowę, aby rozpocząć czat"
+  },
+  "login": {
+    "titleLogin": "Logowanie",
+    "titleRegister": "Rejestracja",
+    "username": "Nazwa użytkownika",
+    "email": "Adres e-mail",
+    "password": "Hasło",
+    "confirmPassword": "Potwierdź hasło",
+    "loginButton": "Zaloguj się",
+    "registerButton": "Zarejestruj się",
+    "alreadyHaveAccount": "Masz już konto?",
+    "loginHere": "Zaloguj się",
+    "dontHaveAccount": "Nie masz konta?",
+    "registerHere": "Zarejestruj się",
+    "passwordsDoNotMatch": "Hasła nie są takie same!",
+    "accountCreated": "Konto zostało utworzone!",
+    "authenticationFailed": "Uwierzytelnianie nie powiodło się"
+  }
+}

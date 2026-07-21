@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import './ChatWindow.css';
 import Message from './Chat/Message';
 import ChatInput from './Chat/ChatInput';
@@ -35,6 +36,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
   const messagesContainerRef = useRef<HTMLDivElement | null>(null);
   const isScrolledUp = useRef(false);
+  const { t } = useTranslation();
   
   const toggleSettings = () => {
     setShowSettings(prev => !prev);

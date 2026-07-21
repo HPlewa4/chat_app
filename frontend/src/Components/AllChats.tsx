@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import { useTranslation } from "react-i18next";
 import './AllChats.css';
 import UserBar from './Sessions/UserBar';
 import Search from './Sessions/Search';
@@ -34,6 +35,7 @@ const AllChats: React.FC<AllChatsProps> = ({
 }) => {
   const [users, setUsers] = useState<string[]>([]);
   const [activeSessions, setActiveSessions] = useState<ChatSession[]>([]);
+  const { t } = useTranslation();
 
   const searchUsers = async (query: string) => {
     if (!query.trim() || !currentUser?.email) {
