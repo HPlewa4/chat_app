@@ -97,25 +97,32 @@ const AllChats: React.FC<AllChatsProps> = ({
 
         const formattedSessions: ChatSession[] = res.data.map((session: any) => {
           const otherUser = session.participants.find((p: string) => p !== currentUser.username);
+          
           return {
             id: session.id,
             username: otherUser || t("allChats.unknownUser"),
             last_message: session.last_message,
-            updated_at: session.updated_at || new Date(0).toISOString() 
+            updated_at: session.updated_at || new Date(0).toISOString()
           };
         });
 
         formattedSessions.sort((a, b) => {
-          return new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime();
+          return (
+            new Date(b.updated_at).getTime() -
+            new Date(a.updated_at).getTime()
+          );
         });
 
         setActiveSessions(formattedSessions);
+
       } catch (err) {
         console.error("Failed to fetch sessions:", err);
       }
     };
+
     fetchSessions();
-  }, [currentUser?.username, refreshTrigger]);
+
+  }, [currentUser?.username, refreshTrigger, t]);
 
   return (
     <div className="all-chats">
