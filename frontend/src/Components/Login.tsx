@@ -8,6 +8,7 @@ interface AuthResponse {
   username?: string;
   email?: string;
   id?: string;
+  profile_pic?: string;
 }
 
 interface LoginProps {
@@ -17,6 +18,7 @@ interface LoginProps {
 interface User {
   username: string | undefined;
   email: string | undefined;
+  profile_pic?: string;
 }
 
 export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
@@ -62,6 +64,7 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
         const loggedInUser: User = {
           username: response.data.username,
           email: response.data.email,
+          profile_pic: response.data.profile_pic,
         };
 
         setCurrentUser(loggedInUser);

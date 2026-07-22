@@ -7,19 +7,22 @@ import './ConversationBar.css';
 interface User {
   username: string;
   email: string;
+  profile_pic?: string;
 }
 
 interface ConversationBarProps {
   currentUser: User | null;
   setCurrentUser: (user: User | null) => void;
   otherUser: string;
+  otherUserProfilePic?: string;
   onToggleSettings?: () => void;
 }
 
 const ConversationBar: React.FC<ConversationBarProps> = ({
   currentUser,
   otherUser,
-  onToggleSettings
+  onToggleSettings,
+  otherUserProfilePic
 }) => {
   const { t } = useTranslation();
 
@@ -27,7 +30,15 @@ const ConversationBar: React.FC<ConversationBarProps> = ({
     <div className="main-bar">
       <div className="user-section">
         <div className="user-icon-container">
-          <UserIcon size={18} color="white" />
+            {otherUserProfilePic ? (
+              <img
+                src={`http://localhost:8000/uploads/${otherUserProfilePic}`}
+                alt={otherUser}
+                className="profile-picture"
+              />
+            ) : (
+              <UserIcon size={18} color="white" />
+            )}
         </div>
 
         <div className="user-info">

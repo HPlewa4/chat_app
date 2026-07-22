@@ -5,18 +5,27 @@ import { UserIcon } from 'lucide-react';
 
 interface UserProps {
   name: string;
+  profilePic?: string;
   last_message?: string;
   searching?: boolean;
   onClick?: () => void;
 }
 
-const User = ({ name, last_message, searching, onClick }: UserProps) => {
+const User = ({ name, last_message, searching, onClick, profilePic }: UserProps) => {
   return (
     <div className="search-result" onClick={onClick}>
       <div className="main-bar">
         <div className="user-section">
           <div className="user-icon-container">
-            <UserIcon size={18} color="white" />
+              {profilePic ? (
+                <img
+                  src={`http://localhost:8000/uploads/${profilePic}`}
+                  alt={name}
+                  className="profile-picture"
+                />
+              ) : (
+                <UserIcon size={18} color="white" />
+              )}
           </div>
 
           <div className="user-info">

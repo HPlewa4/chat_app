@@ -6,7 +6,11 @@ import Login from './Components/Login';
 import API from './api';
 import './App.css';
 
-interface User { username: string; email: string; }
+interface User {
+  username: string;
+  email: string;
+  profile_pic?: string;
+}
 type MessageType = { id?: string; user: string; text: string; };
 
 function App() {
@@ -17,6 +21,7 @@ function App() {
 
   const [activeSessionId, setActiveSessionId] = useState<string | null>(null);
   const [activeOtherUser, setActiveOtherUser] = useState<string>("");
+  const [activeOtherUserProfilePic, setActiveOtherUserProfilePic] = useState<string | undefined>(undefined);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [refreshTrigger, setRefreshTrigger] = useState<number>(0);
 
@@ -107,13 +112,15 @@ function App() {
                     setCurrentUser={setCurrentUser} 
                     setActiveSessionId={setActiveSessionId} 
                     setActiveOtherUser={setActiveOtherUser}
+                    setActiveOtherUserProfilePic={setActiveOtherUserProfilePic}
                     refreshTrigger={refreshTrigger}
                   />
-                  <ChatWindow 
-                    currentUser={currentUser} 
+                  <ChatWindow
+                    currentUser={currentUser}
                     setCurrentUser={setCurrentUser}
-                    activeSessionId={activeSessionId} 
+                    activeSessionId={activeSessionId}
                     activeOtherUser={activeOtherUser}
+                    otherUserProfilePic={activeOtherUserProfilePic}
                     messages={messages}
                     onSendMessage={sendMessage}
                   />

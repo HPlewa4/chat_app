@@ -17,3 +17,11 @@ class UserLogin(BaseModel):
     email: EmailStr
     password: str
 
+class UserResponse(BaseModel):
+    username: str
+    email: EmailStr
+    profile_pic: Optional[str] = None
+
+class UserSearch(BaseModel):
+    username: str
+    profile_pic: Optional[str] = None

@@ -1,5 +1,5 @@
 from datetime import datetime
-from typing import List
+from typing import List, Optional
 from pydantic import BaseModel
 
 
@@ -25,3 +25,4 @@ class SessionOut(BaseModel):
     participants: List[str]
     last_message: str = "No messages yet"
     updated_at: datetime | None = None
+    profile_pic: Optional[str] = None

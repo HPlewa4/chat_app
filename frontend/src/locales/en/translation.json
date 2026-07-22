@@ -48,6 +48,11 @@
     "description": "Manage your account settings here.",
     "language": "Change Language",
     "settings": "settings",
-    "close": "close"
+    "close": "close",
+    "profilePicture": "Profile picture",
+    "uploading": "Uploading...",
+    "changePhoto": "Upload new profile picture",
+    "avatarFail": "Failed to upload image."
+
   }
 }

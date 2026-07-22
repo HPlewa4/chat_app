@@ -1,6 +1,5 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { User as UserIcon, LogOut, Settings } from 'lucide-react';
+import { User as UserIcon, Settings } from 'lucide-react';
 import { useTranslation } from "react-i18next";
 import './UserBar.css';
 import SettingsComponent from './Settings';
@@ -8,6 +7,7 @@ import SettingsComponent from './Settings';
 interface User {
   username: string;
   email: string;
+  profile_pic?: string;
 }
 
 interface UserBarProps {
@@ -17,7 +17,6 @@ interface UserBarProps {
 
 const UserBar: React.FC<UserBarProps> = ({ currentUser, setCurrentUser }) => {
   const [openSettings, setOpenSettings] = React.useState(false);
-  const navigate = useNavigate();
   const { t } = useTranslation();
 
 
@@ -25,13 +24,20 @@ const UserBar: React.FC<UserBarProps> = ({ currentUser, setCurrentUser }) => {
     e.preventDefault();
     setOpenSettings(!openSettings);
   };
-
   return (
     <>
       <div className="main-bar">
         <div className="user-section">
           <div className="user-icon-container">
-            <UserIcon size={18} color="white" />
+              {currentUser?.profile_pic ? (
+                <img
+                  src={`http://localhost:8000/uploads/${currentUser.profile_pic}`}
+                  alt={currentUser.username}
+                  className="profile-picture"
+                />
+              ) : (
+                <UserIcon size={18} color="white" />
+              )}
           </div>
 
           <div className="user-info">

@@ -12,13 +12,18 @@ type MessageType = {
   text: string;
 };
 
-interface User { username: string; email: string; }
+interface User {
+  username: string;
+  email: string;
+  profile_pic?: string;
+}
 
 interface ChatWindowProps {
   currentUser: User | null;
   setCurrentUser: (user: User | null) => void;
   activeSessionId: string | null;
   activeOtherUser: string;
+  otherUserProfilePic?: string;
   messages: MessageType[];
   onSendMessage: (text: string) => Promise<void>;
 }
@@ -29,7 +34,8 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   activeSessionId, 
   activeOtherUser, 
   messages, 
-  onSendMessage 
+  onSendMessage,
+  otherUserProfilePic
 }) => {
 
   const [showSettings, setShowSettings] = useState(false);
@@ -79,6 +85,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
           setCurrentUser={setCurrentUser} 
           otherUser={activeOtherUser} 
           onToggleSettings={toggleSettings}
+          otherUserProfilePic={otherUserProfilePic}
         />
         
         <div className="messages" ref={messagesContainerRef} onScroll={handleScroll}>

@@ -47,6 +47,11 @@
     "description": "Zarządzaj ustawieniami konta tutaj.",
     "language": "Zmień język",
     "settings": "ustawienia",
-    "close": "zamknij"
+    "close": "zamknij",
+    "profilePicture": "Zdjęcie profilowe",
+    "uploading": "Przesyłanie...",
+    "changePhoto": "Dodaj nowe zdjęcie profilowe",
+    "avatarFail": "Nie udało się dodać zdjęcia."
+
     }
 }

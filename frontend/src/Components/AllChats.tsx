@@ -9,6 +9,12 @@ import User from './Sessions/User';
 interface UserInterface {
   username: string;
   email: string;
+  profile_pic?: string;
+}
+
+interface SearchUser {
+  username: string;
+  profile_pic?: string;
 }
 
 interface ChatSession {
@@ -16,6 +22,7 @@ interface ChatSession {
   username: string;
   last_message: string;
   updated_at: string;
+  profile_pic?: string;
 }
 
 interface AllChatsProps {
@@ -24,6 +31,7 @@ interface AllChatsProps {
   setActiveSessionId: (id: string | null) => void;
   refreshTrigger: number;
   setActiveOtherUser: (username: string) => void;
+  setActiveOtherUserProfilePic: (pic: string | undefined) => void;
 }
 
 const AllChats: React.FC<AllChatsProps> = ({ 
@@ -31,9 +39,10 @@ const AllChats: React.FC<AllChatsProps> = ({
   setCurrentUser, 
   setActiveSessionId,
   refreshTrigger,
-  setActiveOtherUser
+  setActiveOtherUser,
+  setActiveOtherUserProfilePic
 }) => {
-  const [users, setUsers] = useState<string[]>([]);
+  const [users, setUsers] = useState<SearchUser[]>([]);
   const [activeSessions, setActiveSessions] = useState<ChatSession[]>([]);
   const { t } = useTranslation();
 
@@ -44,7 +53,7 @@ const AllChats: React.FC<AllChatsProps> = ({
     }
 
     try {
-      const res = await API.get<string[]>("/users/search", {
+      const res = await API.get<SearchUser[]>("/users/search", {
         params: {
           q: query,
           current_email: currentUser.email,
@@ -57,28 +66,29 @@ const AllChats: React.FC<AllChatsProps> = ({
     }
   };
 
-  const handleSelectUser = async (targetUsername: string) => {
+  const handleSelectUser = async (targetUser: SearchUser) => {
     try {
       const res = await API.post("/chat/session", {
         current_user: currentUser?.username,
-        target_user: targetUsername
+        target_user: targetUser.username
       });
 
       const sessionId = res.data.id; 
     
       setActiveSessionId(sessionId);
-      setActiveOtherUser(targetUsername);
+      setActiveOtherUser(targetUser.username);
+      setActiveOtherUserProfilePic(targetUser.profile_pic);
 
       const alreadyActive = activeSessions.some(session => session.id === sessionId);
-      if (!alreadyActive) {
-
-        setActiveSessions(prev => [{ 
-          id: sessionId, 
-          username: targetUsername, 
-          last_message: res.data.last_message || t("allChats.noMessages"),
-          updated_at: new Date().toISOString()
-        }, ...prev]);
-      }
+        if (!alreadyActive) {
+          setActiveSessions(prev => [{ 
+            id: sessionId, 
+            username: targetUser.username,
+            last_message: res.data.last_message || t("allChats.noMessages"),
+            updated_at: new Date().toISOString(),
+            profile_pic: targetUser.profile_pic
+          }, ...prev]);
+        }
 
       setUsers([]); 
     } catch (err) {
@@ -102,7 +112,8 @@ const AllChats: React.FC<AllChatsProps> = ({
             id: session.id,
             username: otherUser || t("allChats.unknownUser"),
             last_message: session.last_message,
-            updated_at: session.updated_at || new Date(0).toISOString()
+            updated_at: session.updated_at || new Date(0).toISOString(),
+            profile_pic: session.profile_pic
           };
         });
 
@@ -112,7 +123,7 @@ const AllChats: React.FC<AllChatsProps> = ({
             new Date(a.updated_at).getTime()
           );
         });
-
+        
         setActiveSessions(formattedSessions);
 
       } catch (err) {
@@ -129,10 +140,13 @@ const AllChats: React.FC<AllChatsProps> = ({
       <Search onSearch={searchUsers} />
       <div className="scrollable-element search-results-list">
         {users.map((user) => (
-          <User key={`search-${user}`} 
-                name={user} 
-                searching={true}
-                onClick={() => handleSelectUser(user)} />
+          <User 
+            key={`search-${user.username}`} 
+            name={user.username} 
+            profilePic={user.profile_pic}
+            searching={true}
+            onClick={() => handleSelectUser(user)}
+          />
         ))}
       </div>
       <div className={`active-chats-list ${users.length > 0 ? 'has-search-results' : ''}`}>
@@ -144,9 +158,11 @@ const AllChats: React.FC<AllChatsProps> = ({
               name={session.username} 
               last_message={session.last_message}
               searching={false}
+              profilePic={session.profile_pic}
               onClick={() => {
                 setActiveSessionId(session.id);
                 setActiveOtherUser(session.username); 
+                setActiveOtherUserProfilePic(session.profile_pic);
               }}
             />
           ))}
