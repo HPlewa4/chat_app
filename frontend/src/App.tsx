@@ -5,12 +5,8 @@ import ChatWindow from './Components/ChatWindow';
 import Login from './Components/Login';
 import API from './api';
 import './App.css';
+import {User} from "./types/user"
 
-interface User {
-  username: string;
-  email: string;
-  profile_pic?: string;
-}
 type MessageType = { id?: string; user: string; text: string; };
 
 function App() {

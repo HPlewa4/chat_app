@@ -3,12 +3,8 @@ import { User as UserIcon, Settings } from 'lucide-react';
 import { useTranslation } from "react-i18next";
 import './UserBar.css';
 import SettingsComponent from './Settings';
+import { User } from '../../types/user';
 
-interface User {
-  username: string;
-  email: string;
-  profile_pic?: string;
-}
 
 interface UserBarProps {
   currentUser: User | null;

@@ -3,12 +3,8 @@ import { Link } from 'react-router-dom';
 import { User as UserIcon, Ellipsis } from 'lucide-react';
 import { useTranslation } from "react-i18next";
 import './ConversationBar.css';
+import {User} from "../../types/user"
 
-interface User {
-  username: string;
-  email: string;
-  profile_pic?: string;
-}
 
 interface ConversationBarProps {
   currentUser: User | null;

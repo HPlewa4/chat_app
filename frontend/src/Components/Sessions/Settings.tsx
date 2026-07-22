@@ -4,12 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { LogOut, X } from 'lucide-react';
 import './Settings.css';
 import API from "../../api";
-
-interface User {
-  username: string;
-  email: string;
-  profile_pic?: string;
-}
+import {User} from "../../types/user"
 
 interface SettingsProps {
   currentUser: User | null;

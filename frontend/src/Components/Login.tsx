@@ -2,24 +2,12 @@ import React, { useState, ChangeEvent, JSX } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import API from "../api";
-
-interface AuthResponse {
-  message: string;
-  username?: string;
-  email?: string;
-  id?: string;
-  profile_pic?: string;
-}
+import {User, AuthResponse} from "../types/user"
 
 interface LoginProps {
   setCurrentUser: (user: any) => void;
 }
 
-interface User {
-  username: string | undefined;
-  email: string | undefined;
-  profile_pic?: string;
-}
 
 export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
   const [isRegistering, setIsRegistering] = useState<boolean>(false);

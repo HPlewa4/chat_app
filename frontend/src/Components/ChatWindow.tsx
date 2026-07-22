@@ -5,6 +5,7 @@ import Message from './Chat/Message';
 import ChatInput from './Chat/ChatInput';
 import ConversationBar from './Chat/ConversationBar';
 import ChatSettings from './Chat/ChatSettings';
+import {User} from "../types/user"
 
 type MessageType = {
   id?: string;
@@ -12,11 +13,7 @@ type MessageType = {
   text: string;
 };
 
-interface User {
-  username: string;
-  email: string;
-  profile_pic?: string;
-}
+
 
 interface ChatWindowProps {
   currentUser: User | null;

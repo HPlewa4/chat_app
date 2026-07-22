@@ -4,29 +4,12 @@ import './AllChats.css';
 import UserBar from './Sessions/UserBar';
 import Search from './Sessions/Search';
 import API from "../api";
-import User from './Sessions/User';
+import UserComponent from './Sessions/User';
+import { User, SearchUser, ChatSession } from '../types/user';
 
-interface UserInterface {
-  username: string;
-  email: string;
-  profile_pic?: string;
-}
-
-interface SearchUser {
-  username: string;
-  profile_pic?: string;
-}
-
-interface ChatSession {
-  id: string;
-  username: string;
-  last_message: string;
-  updated_at: string;
-  profile_pic?: string;
-}
 
 interface AllChatsProps {
-  currentUser: UserInterface | null;
+  currentUser: User | null;
   setCurrentUser: (user: any) => void;
   setActiveSessionId: (id: string | null) => void;
   refreshTrigger: number;
@@ -140,7 +123,7 @@ const AllChats: React.FC<AllChatsProps> = ({
       <Search onSearch={searchUsers} />
       <div className="scrollable-element search-results-list">
         {users.map((user) => (
-          <User 
+          <UserComponent 
             key={`search-${user.username}`} 
             name={user.username} 
             profilePic={user.profile_pic}
@@ -153,7 +136,7 @@ const AllChats: React.FC<AllChatsProps> = ({
         <h3>{t("allChats.recentChats")}</h3>
         <div className="scrollable-element active-sessions">
           {activeSessions.map((session) => (
-            <User 
+            <UserComponent
               key={`session-${session.id}`}
               name={session.username} 
               last_message={session.last_message}
