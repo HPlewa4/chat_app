@@ -2,7 +2,8 @@ import React, { useState, ChangeEvent, JSX } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import API from "../api";
-import {User, AuthResponse} from "../types/user"
+import {User} from "../types/user"
+import { AuthResponse } from "../types/auth";
 
 interface LoginProps {
   setCurrentUser: (user: any) => void;

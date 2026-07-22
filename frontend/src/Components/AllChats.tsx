@@ -5,7 +5,8 @@ import UserBar from './Sessions/UserBar';
 import Search from './Sessions/Search';
 import API from "../api";
 import UserComponent from './Sessions/User';
-import { User, SearchUser, ChatSession } from '../types/user';
+import { User, SearchUser} from '../types/user';
+import { ChatSession } from '../types/session';
 
 
 interface AllChatsProps {
