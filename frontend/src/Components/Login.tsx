@@ -35,14 +35,14 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
         });
 
         const loggedInUser: User = {
-          username: response.data.username,
-          email: response.data.email,
+          username: response.data.username || username,
+          email: response.data.email || email,
         };
 
         setCurrentUser(loggedInUser);
         navigate("/");
-
         alert(t("login.accountCreated"));
+        
       } else {
         const response = await API.post<AuthResponse>("/users/login", {
           email,
