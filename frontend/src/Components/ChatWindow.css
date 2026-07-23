@@ -21,8 +21,11 @@
   width: 6px;
 }
 .messages::-webkit-scrollbar-thumb {
-  background-color: #3d71aa;
+  background-color: var(--scroll);
   border-radius: 10px;
+}
+.messages::-webkit-scrollbar-thumb:hover {
+  background-color: var(--scroll-hover);
 }
 /* Update the main container to layout components horizontally */
 .chat-window {
@@ -50,8 +53,7 @@
 /* Settings Side Panel Styles */
 .settings-sidebar {
   height: 100%;
-  background-color: #ffffff;
-  border-left: 1px solid #e0e0e0; /* Optional: adds a nice separation line */
+  border-left: 1px solid var(--text-light); /* Optional: adds a nice separation line */
   
   /* The Magic: Smoothly animate the width from 0 to 300px */
   width: 0;

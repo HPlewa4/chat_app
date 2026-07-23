@@ -1,7 +1,7 @@
 .chat-settings {
   padding: 20px;
-  background-color: black;
-  color: white;
+  background-color: var(--settings-bg);
+  color: var(--text-main);
   height: 100%;
   box-sizing: border-box;
 }

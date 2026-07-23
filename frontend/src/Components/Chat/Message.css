@@ -1,8 +1,8 @@
 .user-message {
   position: relative;
   display: inline-block;
-  background: #4CAF50;
-  color: white;
+  background: var(--message-color-user);
+  color: var(--text-main);
   padding: 10px 14px;
   align-self: flex-end;
   border-radius: 16px 16px 0 16px;
@@ -19,7 +19,7 @@
   right: -8px;
   width: 0;
   height: 0;
-  border-left: 8px solid #4CAF50;
+  border-left: 8px solid var(--message-color-user);
   border-top: 8px solid transparent;
 }
 
@@ -27,8 +27,8 @@
 .other-message {
   position: relative;
   display: inline-block;
-  background: #a7bea8;
-  color: white;
+  background: var(--message-color-other);
+  color: var(--text-main);
   padding: 10px 14px;
   border-radius:  16px 16px 16px 0;
   max-width: 260px;

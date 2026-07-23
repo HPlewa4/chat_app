@@ -48,9 +48,9 @@
   background: transparent;
 }
 .scrollable-element::-webkit-scrollbar-thumb {
-  background-color: rgba(155, 155, 155, 0.5);
+  background-color: var(--scroll);
   border-radius: 20px;
 }
 .scrollable-element::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(100, 100, 100, 0.7);
+  background-color: var(--scroll-hover);
 }

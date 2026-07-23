@@ -1,13 +1,13 @@
 .main-bar {
   width: 100%;
-  background-color: #2d3436;
+  background-color: var(--user-bg);
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 16px;
   height: 64px;
-  color: white;
-  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-main);
+  border-top: 1px solid var(--border-color);
   box-sizing: border-box;
   flex-shrink: 0;
   margin-top: auto;
@@ -24,7 +24,7 @@
 .user-icon-container {
   width: 36px;
   height: 36px;
-  background-color: #0984e3;
+  background-color: var(--accent-color);
   border-radius: 8px;
   display: flex;
   align-items: center;
@@ -55,8 +55,8 @@
   margin: 0;
   border: none;
   border-radius: 6px;
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: var(--button-color);
+  color: var(--text-main);
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -66,13 +66,13 @@
 }
 
 .logout-button:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: var(--button-color-hover);
 }
 
 .login-link {
   font-size: 13px;
   font-weight: 500;
-  color: #74b9ff;
+  color: var(--accent-color);
   text-decoration: none;
   flex-shrink: 0;
 }

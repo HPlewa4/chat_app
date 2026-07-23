@@ -1,10 +1,24 @@
 :root {
-  --sidebar-bg: #2c3e50;
-  --chat-bg: #1a305c;
-  --accent-color: #3498db;
-  --text-main: #2d3436;
-  --text-light: #636e72;
-  --border-color: #000000;
+  --sidebar-bg: #0d1117;
+  --chat-bg: #161b22;
+  --settings-bg: #0d1117;
+  --user-bg: #2d3436;
+
+  --accent-color: #2f81f7;
+  --message-color-other: #a7bea8;
+  --message-color-user: #4CAF50;
+
+  --text-main: #f0f6fc;
+  --text-light: #8b949e;
+
+  --border-color: rgba(255, 255, 255, 0.1);
+  --button-color: rgba(255, 255, 255, 0.1);
+  --button-color-hover: rgba(255, 255, 255, 0.2);
+
+  --hover-bg: #21262d;
+  --input-bg: #21262d;
+  --scroll: rgba(155, 155, 155, 0.5);
+  --scroll-hover: rgba(100, 100, 100, 0.7);
 }
 
 body {
