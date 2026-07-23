@@ -45,7 +45,7 @@
 
   width: 0;
   height: 0;
-  border-right: 8px solid #a7bea8;
+  border-right: 8px solid var(--message-color-other);
   border-top: 8px solid transparent;
 }
 
