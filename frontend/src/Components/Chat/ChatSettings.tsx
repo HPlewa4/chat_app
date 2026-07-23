@@ -113,6 +113,7 @@ const ChatSettings: React.FC<ChatSettingsProps> = ({ activeSessionId }) => {
           id="chat-bg-picker"
           type="color"
           value={chatBg}
+          className="buttons"
           onChange={(e) => {
             const value = e.target.value;
             setChatBg(value);
@@ -126,6 +127,7 @@ const ChatSettings: React.FC<ChatSettingsProps> = ({ activeSessionId }) => {
         <input
           id="user-message-picker"
           type="color"
+          className="buttons"
           value={userMessageColor}
           onChange={(e) => {
             const value = e.target.value;
@@ -141,6 +143,7 @@ const ChatSettings: React.FC<ChatSettingsProps> = ({ activeSessionId }) => {
           id="other-message-picker"
           type="color"
           value={otherMessageColor}
+          className="buttons"
           onChange={(e) => {
             const value = e.target.value;
             setOtherMessageColor(value);

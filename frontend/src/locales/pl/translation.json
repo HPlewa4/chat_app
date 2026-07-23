@@ -40,14 +40,14 @@
   },
   "chatSettings": {
     "title": "Ustawienia czatu",
-    "description": "Dostosuj swoje doświadczenie czatu tutaj.",
+    "description": "Dostosuj swoje doświadczenie czatu;",
     "bgColor": "Tło czatu",
     "yourMSG":"Twoje wiadomości",
     "otherMSG":"Wiadomości innych"
   },
     "settings": {
     "title": "Ustawienia",
-    "description": "Zarządzaj ustawieniami konta tutaj.",
+    "description": "Zarządzaj ustawieniami konta:",
     "language": "Zmień język",
     "settings": "ustawienia",
     "close": "zamknij",

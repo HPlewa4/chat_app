@@ -9,11 +9,11 @@
   padding: 20px;
   bottom: 400px;
 }
+
 h2 {
   margin-bottom: 0;
 
 }
-
 
 .header-wrapper, .language-selector, .logout-wrapper, .profile-picture-section {
     display: flex;
@@ -32,7 +32,6 @@ select, #language{
     margin: 0;
 }
 
-
 .logout-text{
     display: flex;
     align-items: center;
@@ -40,9 +39,31 @@ select, #language{
 
 .upload-button {
     display: inline-block;
-    padding: 10px 18px;
+    height: 32px;
+    width: 32px;
     cursor: pointer;
     border-radius: 8px;
     background: var(--button-color);
     color: var(--text-main);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.profile-picture-section {
+    align-items: center ;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+}
+
+#language{
+    width: 30%;
+    height: 32px;
+}
+
+label{
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }

@@ -5,3 +5,32 @@
   height: 100%;
   box-sizing: border-box;
 }
+.setting-group{
+  padding: 3px 10px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buttons{
+  height: 32px;
+  width: 32px;
+}
+
+input[type="color"] {
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+  border-radius: 8px;
+}

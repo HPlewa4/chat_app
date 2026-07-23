@@ -41,14 +41,14 @@
   },
   "chatSettings": {
     "title": "Chat Settings",
-    "description": "Customize your chat experience here.",
+    "description": "Customize your chat experience here:",
     "bgColor": "Chat Background",
     "yourMSG":"Your Messages",
     "otherMSG":"Other User Messages"
   },
   "settings": {
     "title": "Settings",
-    "description": "Manage your account settings here.",
+    "description": "Manage your account settings here:",
     "language": "Change Language",
     "settings": "settings",
     "close": "close",

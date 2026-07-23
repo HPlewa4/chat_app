@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useTranslation } from "react-i18next";
 import { useNavigate } from 'react-router-dom';
-import { LogOut, X } from 'lucide-react';
+import { LogOut, Upload, X } from 'lucide-react';
 import './Settings.css';
 import API from "../../api";
 import {User} from "../../types/user"
@@ -121,25 +121,23 @@ const Settings: React.FC<SettingsProps> = ({ currentUser, setCurrentUser, setOpe
         </select>
       </div>
       <div className="profile-picture-section">
+        
+        <p className="upload-text">
+          {uploading
+            ? t("settings.uploading")
+            : t("settings.changePhoto")}
+        </p>
 
-        <input
-            id="profile-pic"
-            type="file"
-            accept="image/*"
-            hidden
-            onChange={handleProfilePicUpload}
-        />
-
-        <label
-            htmlFor="profile-pic"
-            className="upload-button"
-        >
-            {t("settings.changePhoto")}
+        <label htmlFor="profile-pic" className="upload-button">
+          <Upload size={16}/>
         </label>
-
-        {uploading && (
-          <p>{t("settings.uploading")}</p>
-        )}
+        <input
+          id="profile-pic"
+          type="file"
+          accept="image/*"
+          hidden
+          onChange={handleProfilePicUpload}
+        />
 
       </div>
       <div className="logout-wrapper">
