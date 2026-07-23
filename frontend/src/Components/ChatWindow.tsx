@@ -66,6 +66,20 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
     isScrolledUp.current = false;
   }, [activeSessionId]);
 
+  useEffect(() => { 
+    if (!activeSessionId) return;
+
+    fetch(`/session/${activeSessionId}/theme`)
+        .then(r => r.json())
+        .then(theme => {
+            if (!theme) return;
+
+            document.documentElement.style.setProperty("--chat-bg", theme.chat_bg);
+            document.documentElement.style.setProperty("--message-color-user", theme.message_user);
+            document.documentElement.style.setProperty("--message-color-other", theme.message_other);
+        });
+  }, [activeSessionId]);  
+
   if (!activeSessionId) {
     return (
       <div className="chat-window no-session" style={{ padding: '20px', textAlign: 'center' }}>
@@ -105,7 +119,7 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
       </div>
 
       <div className={`settings-sidebar ${showSettings ? 'open' : ''}`}>
-        <ChatSettings />
+        <ChatSettings activeSessionId={activeSessionId} />
       </div>
     </div>
   );

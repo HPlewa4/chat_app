@@ -26,3 +26,8 @@ class SessionOut(BaseModel):
     last_message: str = "No messages yet"
     updated_at: datetime | None = None
     profile_pic: Optional[str] = None
+
+class SessionTheme(BaseModel):
+    chat_bg: str
+    message_user: str
+    message_other: str

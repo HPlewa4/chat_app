@@ -40,7 +40,10 @@
   },
   "chatSettings": {
     "title": "Ustawienia czatu",
-    "description": "Dostosuj swoje doświadczenie czatu tutaj."
+    "description": "Dostosuj swoje doświadczenie czatu tutaj.",
+    "bgColor": "Tło czatu",
+    "yourMSG":"Twoje wiadomości",
+    "otherMSG":"Wiadomości innych"
   },
     "settings": {
     "title": "Ustawienia",

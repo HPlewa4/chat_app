@@ -18,10 +18,17 @@ const Settings: React.FC<SettingsProps> = ({ currentUser, setCurrentUser, setOpe
   const { t, i18n } = useTranslation();
   const navigate = useNavigate();
 
+  const resetTheme = () => {
+    document.documentElement.style.setProperty("--chat-bg", "#161b22");
+    document.documentElement.style.setProperty("--message-color-user", "#1e84c0");
+    document.documentElement.style.setProperty("--message-color-other", "#153668");
+  };
+
   const handleLogout = (e: React.MouseEvent) => {
     e.preventDefault();
     setCurrentUser(null);
     localStorage.removeItem('chat_user');
+    resetTheme();
     navigate('/login');
   };
 

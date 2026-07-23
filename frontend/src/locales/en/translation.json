@@ -41,7 +41,10 @@
   },
   "chatSettings": {
     "title": "Chat Settings",
-    "description": "Customize your chat experience here."
+    "description": "Customize your chat experience here.",
+    "bgColor": "Chat Background",
+    "yourMSG":"Your Messages",
+    "otherMSG":"Other User Messages"
   },
   "settings": {
     "title": "Settings",
@@ -53,6 +56,5 @@
     "uploading": "Uploading...",
     "changePhoto": "Upload new profile picture",
     "avatarFail": "Failed to upload image."
-
   }
 }

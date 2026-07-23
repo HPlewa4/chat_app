@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 from bson import ObjectId
 from fastapi import APIRouter, Query
 from app.database import messages_collection, sessions_collection, users_collection
-from app.models.chat_models import MsgCreate, MsgOut, SessionCreate, SessionOut
+from app.models.chat_models import MsgCreate, MsgOut, SessionCreate, SessionOut, SessionTheme
 
 
 router = APIRouter()
@@ -131,3 +131,30 @@ async def get_user_sessions(username: str = Query(...)):
         })
 
     return session_list
+
+
+@router.put("/session/{session_id}/theme")
+async def update_session_theme(
+    session_id: str,
+    theme: SessionTheme
+):
+    await sessions_collection.update_one(
+        {"_id": ObjectId(session_id)},
+        {
+            "$set": {
+                "theme": theme.model_dump()
+            }
+        }
+    )
+
+    return {"message": "Theme updated"}
+
+@router.get("/session/{session_id}/theme")
+async def get_session_theme(session_id: str):
+
+    session = await sessions_collection.find_one(
+        {"_id": ObjectId(session_id)},
+        {"theme": 1}
+    )
+
+    return session.get("theme", {})
