@@ -134,7 +134,7 @@ const AllChats: React.FC<AllChatsProps> = ({
         ))}
       </div>
       <div className={`active-chats-list ${users.length > 0 ? 'has-search-results' : ''}`}>
-        <h3>{t("allChats.recentChats")}</h3>
+        <h3 className="active-chats-title">{t("allChats.recentChats")}</h3>
         <div className="scrollable-element active-sessions">
           {activeSessions.map((session) => (
             <UserComponent

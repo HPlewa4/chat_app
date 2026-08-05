@@ -30,6 +30,10 @@
   transition: all 0.3s ease;
 }
 
+.active-chats-title {
+  margin: 16px 12px 10px;
+}
+
 .active-sessions {
   flex-grow: 1;
 }
