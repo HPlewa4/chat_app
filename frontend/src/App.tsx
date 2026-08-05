@@ -8,6 +8,7 @@ import './App.css';
 import {User} from "./types/user"
 
 type MessageType = { id?: string; user: string; text: string; };
+const POLL_INTERVAL_MS = 15_000;
 
 function App() {
   const [currentUser, setCurrentUser] = useState<User | null>(() => {
@@ -79,7 +80,7 @@ function App() {
 
     const intervalId = setInterval(() => {
       fetchMessages();
-    }, 3000); 
+    }, POLL_INTERVAL_MS);
 
     return () => clearInterval(intervalId);
   }, [activeSessionId, fetchMessages]);
@@ -89,7 +90,7 @@ function App() {
 
     const sidebarInterval = setInterval(() => {
       setRefreshTrigger(prev => prev + 1);
-    }, 3000);
+    }, POLL_INTERVAL_MS);
 
     return () => clearInterval(sidebarInterval);
   }, [currentUser]);
