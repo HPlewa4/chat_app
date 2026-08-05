@@ -4,6 +4,7 @@ import { User as UserIcon, Ellipsis } from 'lucide-react';
 import { useTranslation } from "react-i18next";
 import './ConversationBar.css';
 import {User} from "../../types/user"
+import { API_BASE_URL } from '../../api';
 
 
 interface ConversationBarProps {
@@ -28,7 +29,7 @@ const ConversationBar: React.FC<ConversationBarProps> = ({
         <div className="user-icon-container">
             {otherUserProfilePic ? (
               <img
-                src={`http://localhost:8000/uploads/${otherUserProfilePic}`}
+                src={`${API_BASE_URL}/uploads/${otherUserProfilePic}`}
                 alt={otherUser}
                 className="profile-picture"
               />

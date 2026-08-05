@@ -6,6 +6,7 @@ import ChatInput from './Chat/ChatInput';
 import ConversationBar from './Chat/ConversationBar';
 import ChatSettings from './Chat/ChatSettings';
 import {User} from "../types/user"
+import API from '../api';
 
 type MessageType = {
   id?: string;
@@ -69,15 +70,16 @@ const ChatWindow: React.FC<ChatWindowProps> = ({
   useEffect(() => { 
     if (!activeSessionId) return;
 
-    fetch(`/session/${activeSessionId}/theme`)
-        .then(r => r.json())
-        .then(theme => {
+    API.get(`/chat/session/${activeSessionId}/theme`)
+        .then(response => {
+            const theme = response.data;
             if (!theme) return;
 
             document.documentElement.style.setProperty("--chat-bg", theme.chat_bg);
             document.documentElement.style.setProperty("--message-color-user", theme.message_user);
             document.documentElement.style.setProperty("--message-color-other", theme.message_other);
-        });
+        })
+        .catch(error => console.error("Failed to fetch chat theme", error));
   }, [activeSessionId]);  
 
   if (!activeSessionId) {

@@ -2,6 +2,7 @@ import React from 'react'
 import './User.css'
 import './UserBar.css'
 import { UserIcon } from 'lucide-react';
+import { API_BASE_URL } from '../../api';
 
 interface UserProps {
   name: string;
@@ -19,7 +20,7 @@ const User = ({ name, last_message, searching, onClick, profilePic }: UserProps)
           <div className="user-icon-container">
               {profilePic ? (
                 <img
-                  src={`http://localhost:8000/uploads/${profilePic}`}
+                  src={`${API_BASE_URL}/uploads/${profilePic}`}
                   alt={name}
                   className="profile-picture"
                 />

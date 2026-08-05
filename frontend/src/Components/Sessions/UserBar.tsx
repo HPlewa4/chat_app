@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import './UserBar.css';
 import SettingsComponent from './Settings';
 import { User } from '../../types/user';
+import { API_BASE_URL } from '../../api';
 
 
 interface UserBarProps {
@@ -27,7 +28,7 @@ const UserBar: React.FC<UserBarProps> = ({ currentUser, setCurrentUser }) => {
           <div className="user-icon-container">
               {currentUser?.profile_pic ? (
                 <img
-                  src={`http://localhost:8000/uploads/${currentUser.profile_pic}`}
+                  src={`${API_BASE_URL}/uploads/${currentUser.profile_pic}`}
                   alt={currentUser.username}
                   className="profile-picture"
                 />
