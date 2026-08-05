@@ -91,7 +91,7 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
           <input
             placeholder={t("login.username")}
             value={username}
-            style={{ padding: "10px 0" }}
+            style={{ padding: "10px" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setUsername(e.target.value)
             }
@@ -103,7 +103,7 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
           placeholder={t("login.email")}
           value={email}
           autoComplete="email"
-          style={{ padding: "10px 0" }}
+          style={{ padding: "10px" }}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setEmail(e.target.value)
           }
@@ -113,7 +113,7 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
           type="password"
           placeholder={t("login.password")}
           value={password}
-          style={{ padding: "10px 0" }}
+          style={{ padding: "10px" }}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setPassword(e.target.value)
           }
@@ -124,7 +124,7 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
             type="password"
             placeholder={t("login.confirmPassword")}
             value={confirmPassword}
-            style={{ padding: "10px 0" }}
+            style={{ padding: "10px" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setConfirmPassword(e.target.value)
             }
