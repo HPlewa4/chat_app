@@ -1,17 +1,18 @@
 from fastapi import APIRouter, HTTPException, Query, status, UploadFile, File
-from app.database import users_collection
+from app.database import avatars_collection, users_collection
 from app.models.user_models import UserRegister, UserLogin, UserSearch
 from app.auth import hash_password, verify_password
-from pathlib import Path
 from uuid import uuid4
-import os
-import shutil
 
 
 router = APIRouter()
-UPLOAD_ROOT = Path(os.getenv("UPLOAD_DIR", "uploads"))
-UPLOAD_DIR = UPLOAD_ROOT / "avatars"
-UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
+MAX_AVATAR_SIZE = 5 * 1024 * 1024
+ALLOWED_IMAGE_TYPES = {
+    "image/jpeg": ".jpg",
+    "image/png": ".png",
+    "image/gif": ".gif",
+    "image/webp": ".webp",
+}
 
 @router.post("/register")
 async def register_user(user: UserRegister):
@@ -104,19 +105,33 @@ async def upload_avatar(
             detail="User not found"
         )
 
-    if not file.content_type.startswith("image/"):
+    if file.content_type not in ALLOWED_IMAGE_TYPES:
         raise HTTPException(
             status_code=400,
-            detail="File must be an image"
+            detail="Avatar must be a JPEG, PNG, GIF, or WebP image"
         )
 
-    extension = Path(file.filename).suffix
+    image_data = await file.read(MAX_AVATAR_SIZE + 1)
+    if len(image_data) > MAX_AVATAR_SIZE:
+        raise HTTPException(
+            status_code=413,
+            detail="Avatar must be 5 MB or smaller"
+        )
+
+    extension = ALLOWED_IMAGE_TYPES[file.content_type]
     filename = f"{uuid4()}{extension}"
 
-    filepath = UPLOAD_DIR / filename
-
-    with filepath.open("wb") as buffer:
-        shutil.copyfileobj(file.file, buffer)
+    await avatars_collection.update_one(
+        {"email": email},
+        {
+            "$set": {
+                "filename": filename,
+                "content_type": file.content_type,
+                "data": image_data,
+            }
+        },
+        upsert=True,
+    )
 
     profile_pic = f"avatars/{filename}"
 
