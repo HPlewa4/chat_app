@@ -4,11 +4,13 @@ from app.models.user_models import UserRegister, UserLogin, UserSearch
 from app.auth import hash_password, verify_password
 from pathlib import Path
 from uuid import uuid4
+import os
 import shutil
 
 
 router = APIRouter()
-UPLOAD_DIR = Path("uploads/avatars")
+UPLOAD_ROOT = Path(os.getenv("UPLOAD_DIR", "uploads"))
+UPLOAD_DIR = UPLOAD_ROOT / "avatars"
 UPLOAD_DIR.mkdir(parents=True, exist_ok=True)
 
 @router.post("/register")

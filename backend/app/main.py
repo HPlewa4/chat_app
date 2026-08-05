@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.routes import user_routes, chat_routes
 from fastapi.staticfiles import StaticFiles
 import os
+from pathlib import Path
 
 app = FastAPI()
 
@@ -16,7 +17,20 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.mount("/uploads", StaticFiles(directory="uploads"), name="uploads")
+upload_directory = Path(os.getenv("UPLOAD_DIR", "uploads"))
+upload_directory.mkdir(parents=True, exist_ok=True)
+
+app.mount(
+    "/uploads",
+    StaticFiles(directory=upload_directory),
+    name="uploads",
+)
+
+
+@app.get("/health")
+async def health_check():
+    return {"status": "ok"}
+
 
 app.include_router(user_routes.router, prefix="/users")
 app.include_router(chat_routes.router, prefix="/chat")
