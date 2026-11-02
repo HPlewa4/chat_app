@@ -1,4 +1,4 @@
-import React, { useState, ChangeEvent, JSX } from "react";
+import React, { useState, ChangeEvent, FormEvent, JSX } from "react";
 import { useTranslation } from "react-i18next";
 import { useNavigate } from "react-router-dom";
 import API from "../api";
@@ -20,7 +20,10 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
   const navigate = useNavigate();
   const { t } = useTranslation();
 
-  const handleAuth = async (): Promise<void> => {
+  const handleAuth = async (event: FormEvent<HTMLFormElement>): Promise<void> => {
+    event.preventDefault();
+    const normalizedEmail = email.trim();
+
     try {
       if (isRegistering) {
         if (password !== confirmPassword) {
@@ -30,14 +33,14 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
 
         const response = await API.post<AuthResponse>("/users/register", {
           username,
-          email,
+          email: normalizedEmail,
           password,
           confirm_password: confirmPassword,
         });
 
         const loggedInUser: User = {
           username: response.data.username || username,
-          email: response.data.email || email,
+          email: response.data.email || normalizedEmail,
         };
 
         setCurrentUser(loggedInUser);
@@ -46,7 +49,7 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
         
       } else {
         const response = await API.post<AuthResponse>("/users/login", {
-          email,
+          email: normalizedEmail,
           password,
         });
 
@@ -62,8 +65,17 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
     } catch (error: any) {
       console.error(error);
 
-      const errorDetail =
-        error.response?.data?.detail || t("login.authenticationFailed");
+      const detail = error.response?.data?.detail;
+      const errorDetail = Array.isArray(detail)
+        ? detail
+            .map(
+              (item: { loc?: Array<string | number>; msg?: string }) =>
+                `${item.loc?.slice(-1)[0] ?? "Request"}: ${item.msg ?? "Invalid value"}`,
+            )
+            .join("\n")
+        : typeof detail === "string"
+          ? detail
+          : t("login.authenticationFailed");
 
       alert(errorDetail);
     }
@@ -80,7 +92,8 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
           : t("login.titleLogin")}
       </h2>
 
-      <div
+      <form
+        onSubmit={handleAuth}
         style={{
           display: "flex",
           flexDirection: "column",
@@ -91,6 +104,7 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
           <input
             placeholder={t("login.username")}
             value={username}
+            required
             style={{ padding: "10px" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setUsername(e.target.value)
@@ -103,6 +117,7 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
           placeholder={t("login.email")}
           value={email}
           autoComplete="email"
+          required
           style={{ padding: "10px" }}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setEmail(e.target.value)
@@ -113,6 +128,7 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
           type="password"
           placeholder={t("login.password")}
           value={password}
+          required
           style={{ padding: "10px" }}
           onChange={(e: ChangeEvent<HTMLInputElement>) =>
             setPassword(e.target.value)
@@ -124,6 +140,7 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
             type="password"
             placeholder={t("login.confirmPassword")}
             value={confirmPassword}
+            required
             style={{ padding: "10px" }}
             onChange={(e: ChangeEvent<HTMLInputElement>) =>
               setConfirmPassword(e.target.value)
@@ -131,12 +148,12 @@ export default function Login({ setCurrentUser }: LoginProps): JSX.Element {
           />
         )}
 
-        <button onClick={handleAuth}>
+        <button type="submit">
           {isRegistering
             ? t("login.registerButton")
             : t("login.loginButton")}
         </button>
-      </div>
+      </form>
 
       <div style={{ marginTop: "20px", fontSize: "14px" }}>
         {isRegistering ? (
